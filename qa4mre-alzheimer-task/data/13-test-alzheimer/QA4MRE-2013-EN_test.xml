@@ -50,7 +50,7 @@ Of mice and men: an Alzheimer’s cure for our murine brethren. Alzheimer's Dise
 					<answer a_id='1'>several weeks</answer>
 					<answer a_id='2'>three days</answer>
 					<answer a_id='3'>several years</answer>
-					<answer a_id='4'>three months</answer>
+						<answer a_id='4'>three months</answer>
 					<answer a_id='5'>None of the above</answer>
 				</q>
 				<q  q_id="7" >
