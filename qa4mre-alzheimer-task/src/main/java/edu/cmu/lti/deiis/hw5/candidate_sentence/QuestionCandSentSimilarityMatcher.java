@@ -1,3 +1,8 @@
+/*
+ * QuestionCandSentSimilarityMatcher finds the candidate sentences of answer which match
+ * the question by searching noun phrases and named entities using Solr indexer
+ */
+
 package edu.cmu.lti.deiis.hw5.candidate_sentence;
 
 import java.util.ArrayList;
@@ -39,6 +44,7 @@ public class QuestionCandSentSimilarityMatcher  extends JCasAnnotator_ImplBase{
 		serverUrl = (String) context.getConfigParameterValue("SOLR_SERVER_URL");
 		coreName = (String) context.getConfigParameterValue("SOLR_CORE");
 		schemaName = (String) context.getConfigParameterValue("SCHEMA_NAME");
+		/* # of results to retrieve */
 		TOP_SEARCH_RESULTS = (Integer) context.getConfigParameterValue("TOP_SEARCH_RESULTS");
 		try {
 			this.solrWrapper = new SolrWrapper(serverUrl+coreName);
@@ -53,20 +59,24 @@ public class QuestionCandSentSimilarityMatcher  extends JCasAnnotator_ImplBase{
 	public void process(JCas aJCas) throws AnalysisEngineProcessException {
 		TestDocument testDoc=Utils.getTestDocumentFromCAS(aJCas);
 		String testDocId=testDoc.getId();
+		/* annotated sentences */
 		ArrayList<Sentence>sentenceList=Utils.getSentenceListFromTestDocCAS(aJCas);
 		ArrayList<QuestionAnswerSet>qaSet=Utils.getQuestionAnswerSetFromTestDocCAS(aJCas);
 		
 		for(int i=0;i<qaSet.size();i++){
-			
+			/* iterate over qa set */
 			
 			Question question=qaSet.get(i).getQuestion();
 			System.out.println("========================================================");
 			System.out.println("Question: "+question.getText());
+			/* forming a query string of noun phrases and named entities */
 			String searchQuery=this.formSolrQuery(question);
 			if(searchQuery.trim().equals("")){
+			  /* empty query, no noun phrases or named entities */
 				continue;
 			}
 			ArrayList<CandidateSentence>candidateSentList=new ArrayList<CandidateSentence>();
+			/* forming a Solr query */
 			SolrQuery solrQuery=new SolrQuery();
 			solrQuery.add("fq", "docid:"+testDocId);
 			solrQuery.add("q",searchQuery);
@@ -75,9 +85,10 @@ public class QuestionCandSentSimilarityMatcher  extends JCasAnnotator_ImplBase{
 			try {
 				SolrDocumentList results=solrWrapper.runQuery(solrQuery, TOP_SEARCH_RESULTS);
 				for(int j=0;j<results.size();j++){
-					SolrDocument doc=results.get(j);					
-					String sentId=doc.get("id").toString();
+					SolrDocument doc=results.get(j);					    /* text retrieved */
+					String sentId=doc.get("id").toString();        /* sentence retrieved */
 					String docId=doc.get("docid").toString();
+					/* verify the doc retrieved is the test Doc */
 					if(!testDocId.equals(docId)){
 						continue;
 					}
@@ -87,6 +98,7 @@ public class QuestionCandSentSimilarityMatcher  extends JCasAnnotator_ImplBase{
 					
 					String sentence=doc.get("text").toString();
 					double relScore=Double.parseDouble(doc.get("score").toString());
+					/* add the retrieved sentence to cas */
 					CandidateSentence candSent=new CandidateSentence(aJCas);
 					candSent.setSentence(annSentence);
 					candSent.setRelevanceScore(relScore);
@@ -111,6 +123,13 @@ public class QuestionCandSentSimilarityMatcher  extends JCasAnnotator_ImplBase{
 		
 	}
 
+	/**
+	 * create a query string containing the noun phrases and named entities
+	 * in the question
+	 * 
+	 * @param question
+	 * @return
+	 */
 	public String formSolrQuery(Question question){
 		String solrQuery="";
 		
