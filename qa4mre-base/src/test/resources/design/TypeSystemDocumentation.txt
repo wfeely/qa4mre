@@ -40,40 +40,40 @@ Baseline Types System:
 	1.	text(String) 
 	2.	weight(Double)
 	3.	synonyms (FSList of Synonym) 
-7.	Question (Annotation) 
-	1.	id (String) 
-	2.	text (String) 
-	3.	dependencies ( FSList of Token ) 
-	4.	nerList (FSList of NER)
-	5.	nounList (FSList of Noun) 
-	6.	tokenList (FSList of Token) 
-8.	QuestionAnswerSet(Annotation) 
-	1.	question
-	2.	answerList (FSList of Answer) 
-	3.	candidateSentenceList(FSList CandidateSentence)
-9.	Sentence (Annotation) 
-	1.	id(String) 
-	2.	text(String) 
-	3.	qualityScore(Double) 
-	4.	dependencyList(FSList of Dependency)
-	5.	tokenList (FSList of Token ) 
-	6.	bFilter (Boolean) 
-	7.	phraseList (FSList of NounPhrase)
-	8.	nerList (FSList of NER)
-10.	Source Document(Annotation) 
-	1.	text (String) 
-	2.	id (String)
-	3.	filtered (String)
-	4.	sentenceList (FSList of Sentence) 
-11.	Synonym (Annotation) 
-	1.	text (String)
-	2.	source (String)
-	3.	weight (Double) 
-12.	Test Document (Annotation) 
-	1.	qaList (FSList of QuestionAnswerSet)
-	2.	reading (String)
-	3.	topicID (String)
-13.	Token (Annotation) 
-	1.	test (String)
-	2.	pos (String)
-	3.	ner (String) 
+7.	Question (Annotation):	Annotates the question sentences
+	1.	id (String) :		Question ID
+	2.	text (String) :		Text of the question
+	3.	dependencies ( FSList of Token ) :		Dependencies found in the question (Relation, Governor, Dependent)
+	4.	nerList (FSList of NER):		List of named entities
+	5.	nounList (FSList of Noun) :		List of noun phrases
+	6.	tokenList (FSList of Token) : 	List of tokens
+8.	QuestionAnswerSet(Annotation) : 	A question and its corresponding answers
+	1.	question :						Question
+	2.	answerList (FSList of Answer) :	A list of the answer choices to the question
+	3.	candidateSentenceList(FSList CandidateSentence) :	A list of the candidate sentences which may contains information about the answer
+9.	Sentence (Annotation) :		Annotates a sentence
+	1.	id(String) :			ID of the sentence
+	2.	text(String) :			text of the sentence
+	3.	qualityScore(Double) :	Evaluates how informative a sentence is (not too short, not too many digits or names, could be reference)
+	4.	dependencyList(FSList of Dependency): 	Dependencies found in the question (Relation, Governor, Dependent)
+	5.	tokenList (FSList of Token ) : 			List of tokens
+	6.	bFilter (Boolean) :						Filtered or not (true if quality lower than certain threshold)
+	7.	phraseList (FSList of NounPhrase) :		List of noun phrases
+	8.	nerList (FSList of NER) :				List of named entities
+10.	Source Document(Annotation) :				Source Document
+	1.	text (String) :							Text of the document
+	2.	id (String)	:							Document ID
+	3.	filtered (String) :						Filtered document text (unnecessary segments, tables, references, etc removed)
+	4.	sentenceList (FSList of Sentence) :		List of sentences
+11.	Synonym (Annotation) :			Synonym of named entities / noun phrases
+	1.	text (String) :				Text of the synonym
+	2.	source (String) :			Stem of the synonyms
+	3.	weight (Double) :			How similar are the synonym and the source
+12.	Test Document (Annotation) :	Document containing the qa sets
+	1.	qaList (FSList of QuestionAnswerSet) : 	List of the test Q-A set
+	2.	reading (String) :			Related reading document
+	3.	topicID (String) :			topic
+13.	Token (Annotation) :		Tokens in a document
+	1.	text (String) :			Text of the token		
+	2.	pos (String) :			POS tagging (grammatical tagging,  nouns, verbs, adjectives, adverbs, etc) 
+	3.	ner (String) :			Named Entity recognizer

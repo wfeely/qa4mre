@@ -1,3 +1,8 @@
+/*
+ * QuestionCandSentSimilarityMatcher finds the candidate sentences of answer which match
+ * the question by searching noun phrases and named entities using Solr indexer
+ */
+
 package edu.cmu.lti.deiis.hw5.candidate_sentence;
 
 import java.util.ArrayList;
@@ -33,7 +38,10 @@ public class QuestionCandSentSimilarityMatcher extends JCasAnnotator_ImplBase {
 
   SolrWrapper solrWrapper = null;
 
+
   String serverUrl;
+
+
 
   // IndexSchema indexSchema;
   String coreName;
@@ -150,5 +158,6 @@ public class QuestionCandSentSimilarityMatcher extends JCasAnnotator_ImplBase {
 
     return solrQuery;
   }
+
 
 }

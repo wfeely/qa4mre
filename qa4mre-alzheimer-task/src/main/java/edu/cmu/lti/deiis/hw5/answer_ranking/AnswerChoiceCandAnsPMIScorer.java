@@ -1,3 +1,13 @@
+/*
+ * AnswerChoiceCandAnsPMIScorer scores the options of answers using point-wise mutual information
+ * 
+ * pmi (x,y) = log [p(x,y)] / log(x) p(y)
+ *           = log [p(x|y)/p(x)]
+ *           = log [p(y|x)/p(y)]
+ *           
+ * 
+ */
+
 package edu.cmu.lti.deiis.hw5.answer_ranking;
 
 import java.util.ArrayList;
@@ -57,7 +67,8 @@ public class AnswerChoiceCandAnsPMIScorer extends JCasAnnotator_ImplBase {
 				.getQuestionAnswerSetFromTestDocCAS(aJCas);
 
 		for (int i = 0; i < qaSet.size(); i++) {
-
+		  /* for each qa set */
+		  
 			Question question = qaSet.get(i).getQuestion();
 			System.out.println("Question: " + question.getText());
 			ArrayList<Answer> choiceList = Utils.fromFSListToCollection(qaSet
@@ -69,20 +80,24 @@ public class AnswerChoiceCandAnsPMIScorer extends JCasAnnotator_ImplBase {
 
 			int topK = Math.min(K_CANDIDATES, candSentList.size());
 			for (int c = 0; c < topK; c++) {
-
+			  /* for each candidate answer */
 				CandidateSentence candSent = candSentList.get(c);
 
+				/* the list of noun phrases in the candidate sentence */
 				ArrayList<NounPhrase> candSentNouns = Utils
 						.fromFSListToCollection(candSent.getSentence()
 								.getPhraseList(), NounPhrase.class);
+				/* the list of NEs in the candidate sentence */
 				ArrayList<NER> candSentNers = Utils.fromFSListToCollection(
 						candSent.getSentence().getNerList(), NER.class);
 
 				ArrayList<CandidateAnswer>candAnsList=new ArrayList<CandidateAnswer>();
 				for (int j = 0; j < choiceList.size(); j++) {
+				  /* try to match each of the choice */
 					double score1 = 0.0;
 					Answer answer = choiceList.get(j);
-
+					
+					/* p(x|y) of noun phrases */
 					for (int k = 0; k < candSentNouns.size(); k++) {
 						try {
 							score1 += scoreCoOccurInSameDoc(candSentNouns
@@ -93,6 +108,7 @@ public class AnswerChoiceCandAnsPMIScorer extends JCasAnnotator_ImplBase {
 						}
 					}
 
+					/* p(x|y) of noun NEs */
 					for (int k = 0; k < candSentNers.size(); k++) {
 
 						try {
@@ -135,6 +151,14 @@ public class AnswerChoiceCandAnsPMIScorer extends JCasAnnotator_ImplBase {
 
 	}
 
+	/**
+	 * p(x,y)/p(y) = p(x|y)
+	 * 
+	 * @param question
+	 * @param choice
+	 * @return
+	 * @throws Exception
+	 */
 	public double scoreCoOccurInSameDoc(String question, Answer choice)
 			throws Exception {
 		// String choiceTokens[] = choice.split("[ ]");
@@ -143,7 +167,7 @@ public class AnswerChoiceCandAnsPMIScorer extends JCasAnnotator_ImplBase {
 		double score = 0.0;
 
 		for (int i = 0; i < choiceNounPhrases.size(); i++) {
-			// score1(choicei) = hits(problem AND choicei) / hits(choicei)
+			/* score1(choicei) = hits(problem AND choicei) / hits(choicei) */
 			String choiceNounPhrase = choiceNounPhrases.get(i).getText();
 			if (question.split("[ ]").length > 1) {
 				question = "\"" + question + "\"";
@@ -185,15 +209,22 @@ public class AnswerChoiceCandAnsPMIScorer extends JCasAnnotator_ImplBase {
 			}
 			// System.out.println(query+"\t"+nHits1);
 
+			
 			/*
-			 * query = question; // System.out.println(query); params = new
-			 * HashMap<String, String>(); params.put("q", query);
-			 * params.put("rows", "1"); solrParams = new MapSolrParams(params);
-			 * rsp = solrWrapper.getServer().query(solrParams); long nHits2 =
-			 * rsp.getResults().getNumFound(); //
+			 * This came from the original comment, which I suppose necessary to 
+			 * cacalucate PMI, because it obtains p(x)  - ernest
+			 * 
+			 * query = question; // System.out.println(query); 
+			 * params = new HashMap<String, String>(); 
+			 * params.put("q", query);
+			 * params.put("rows", "1"); 
+			 * solrParams = new MapSolrParams(params);
+			 * rsp = solrWrapper.getServer().query(solrParams); 
+			 * long nHits2 = rsp.getResults().getNumFound(); //
 			 * System.out.println(query+"\t"+nHits2);
 			 */
 
+			/* log seems needed */
 			// score += myLog(combinedHits, nHits1, nHits2);
 			if (nHits1 != 0) {
 				score += (double) combinedHits / nHits1;
