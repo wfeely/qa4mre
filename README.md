@@ -14,8 +14,9 @@ Visit our [Wiki](https://github.com/wfeely/hw5-team05/wiki) page
   * Parent project with global type system definition
 * [task](https://github.com/wfeely/hw5-team05/tree/master/qa4mre-alzheimer-task) 
   * Subproject for machine reading evaluation
-* [design](https://github.com/wfeely/hw5-team05/wiki/Project-Design) 
+* [design](https://github.com/wfeely/hw5-team05/blob/master/qa4mre-alzheimer-task/design) 
   * Design document for the project
-  *  [[New]()] Includes initial writeup/project proposal
+* [design-wiki](https://github.com/wfeely/hw5-team05/wiki/Project-Design) 
+  *  [[New](https://github.com/wfeely/hw5-team05/blob/master/qa4mre-alzheimer-task/design/DEIISProjectProposal.pdf)] Includes initial writeup/project proposal
 * [test](https://github.com/wfeely/hw5-team05/tree/master/qa4mre-base/src/test) 
   * A directory for unit tests. 
