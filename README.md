@@ -1,4 +1,4 @@
-qa4mre
+QA4MRE Team 5
 ======
 
-For class project homework 5
+Project Overview
