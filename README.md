@@ -20,3 +20,6 @@ Visit our [Wiki](https://github.com/wfeely/hw5-team05/wiki) page
   *  [[New](https://github.com/wfeely/hw5-team05/blob/master/qa4mre-alzheimer-task/design/DEIISProjectProposal.pdf)] Includes initial writeup/project proposal
 * [test](https://github.com/wfeely/hw5-team05/tree/master/qa4mre-base/src/test) 
   * A directory for unit tests. 
+  
+## Download Source
+Download as [zip](https://github.com/wfeely/hw5-team05/archive/master.zip) file
