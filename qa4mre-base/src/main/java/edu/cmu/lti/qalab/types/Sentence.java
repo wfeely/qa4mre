@@ -12,8 +12,8 @@ import org.apache.uima.jcas.tcas.Annotation;
 
 
 /** 
- * Updated by JCasGen Mon May 13 14:41:33 EDT 2013
- * XML source: /media/alkesh/Windows7_OS/Users/alkesh/git/qa4mre-cse/qa4mre-base/src/main/resources/TypeSystemDescriptor.xml
+ * Updated by JCasGen Sat Nov 09 15:54:44 EST 2013
+ * XML source: /home/hermes/git/hw5-team05/qa4mre-base/src/main/resources/TypeSystemDescriptor.xml
  * @generated */
 public class Sentence extends Annotation {
   /** @generated
@@ -205,6 +205,24 @@ public class Sentence extends Annotation {
     if (Sentence_Type.featOkTst && ((Sentence_Type)jcasType).casFeat_nerList == null)
       jcasType.jcas.throwFeatMissing("nerList", "edu.cmu.lti.qalab.types.Sentence");
     jcasType.ll_cas.ll_setRefValue(addr, ((Sentence_Type)jcasType).casFeatCode_nerList, jcasType.ll_cas.ll_getFSRef(v));}    
+   
+    
+  //*--------------*
+  //* Feature: verbPhraseList
+
+  /** getter for verbPhraseList - gets 
+   * @generated */
+  public FSList getVerbPhraseList() {
+    if (Sentence_Type.featOkTst && ((Sentence_Type)jcasType).casFeat_verbPhraseList == null)
+      jcasType.jcas.throwFeatMissing("verbPhraseList", "edu.cmu.lti.qalab.types.Sentence");
+    return (FSList)(jcasType.ll_cas.ll_getFSForRef(jcasType.ll_cas.ll_getRefValue(addr, ((Sentence_Type)jcasType).casFeatCode_verbPhraseList)));}
+    
+  /** setter for verbPhraseList - sets  
+   * @generated */
+  public void setVerbPhraseList(FSList v) {
+    if (Sentence_Type.featOkTst && ((Sentence_Type)jcasType).casFeat_verbPhraseList == null)
+      jcasType.jcas.throwFeatMissing("verbPhraseList", "edu.cmu.lti.qalab.types.Sentence");
+    jcasType.ll_cas.ll_setRefValue(addr, ((Sentence_Type)jcasType).casFeatCode_verbPhraseList, jcasType.ll_cas.ll_getFSRef(v));}    
   }
 
     

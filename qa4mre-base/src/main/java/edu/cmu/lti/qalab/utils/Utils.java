@@ -26,6 +26,7 @@ import edu.cmu.lti.qalab.types.Sentence;
 import edu.cmu.lti.qalab.types.SourceDocument;
 import edu.cmu.lti.qalab.types.TestDocument;
 import edu.cmu.lti.qalab.types.Token;
+import edu.cmu.lti.qalab.types.VerbPhrase;
 import edu.stanford.nlp.trees.semgraph.SemanticGraphEdge;
 
 public class Utils {
@@ -215,6 +216,32 @@ public class Utils {
 
 		return list;
 	}
+	
+	 /**
+   * @param aJCas
+   * @param aCollection
+   * @return
+   */
+  public static FSList createVerbPhraseList(JCas aJCas, Collection<VerbPhrase> aCollection) {
+    if (aCollection.size() == 0) {
+      return new EmptyFSList(aJCas);
+    }
+
+    NonEmptyFSList head = new NonEmptyFSList(aJCas);
+    NonEmptyFSList list = head;
+    Iterator<VerbPhrase> i = aCollection.iterator();
+    while (i.hasNext()) {
+      head.setHead(i.next());
+      if (i.hasNext()) {        
+        head.setTail(new NonEmptyFSList(aJCas));
+        head = (NonEmptyFSList) head.getTail();
+      } else {
+        head.setTail(new EmptyFSList(aJCas));
+      }
+    }
+
+    return list;
+  }
 
 	/**
 	 * @param aJCas
