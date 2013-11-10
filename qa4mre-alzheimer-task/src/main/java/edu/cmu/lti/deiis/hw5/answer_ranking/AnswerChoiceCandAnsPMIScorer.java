@@ -152,7 +152,7 @@ public class AnswerChoiceCandAnsPMIScorer extends JCasAnnotator_ImplBase {
 	}
 
 	/**
-	 * p(x,y)/p(y) = p(x|y)
+	 * pmi(x,y)
 	 * 
 	 * @param question
 	 * @param choice
@@ -178,6 +178,7 @@ public class AnswerChoiceCandAnsPMIScorer extends JCasAnnotator_ImplBase {
 
 			String query = question + " AND " + choiceNounPhrase;
 			// System.out.println(query);
+			/* form query */
 			HashMap<String, String> params = new HashMap<String, String>();
 			params.put("q", query);
 			params.put("rows", "1");
@@ -199,7 +200,8 @@ public class AnswerChoiceCandAnsPMIScorer extends JCasAnnotator_ImplBase {
 			params.put("q", query);
 			params.put("rows", "1");
 			solrParams = new MapSolrParams(params);
-
+			
+			/* p(x) */
 			long nHits1 = 0;
 			try {
 				rsp = solrWrapper.getServer().query(solrParams);
@@ -211,27 +213,26 @@ public class AnswerChoiceCandAnsPMIScorer extends JCasAnnotator_ImplBase {
 
 			
 			/*
-			 * This came from the original comment, which I suppose necessary to 
-			 * cacalucate PMI, because it obtains p(x)  - ernest
-			 * 
-			 * query = question; // System.out.println(query); 
-			 * params = new HashMap<String, String>(); 
-			 * params.put("q", query);
-			 * params.put("rows", "1"); 
-			 * solrParams = new MapSolrParams(params);
-			 * rsp = solrWrapper.getServer().query(solrParams); 
-			 * long nHits2 = rsp.getResults().getNumFound(); //
-			 * System.out.println(query+"\t"+nHits2);
-			 */
+			 * calculate p(y)  
+			 */ 
+			 query = question; // System.out.println(query); 
+			 params = new HashMap<String, String>(); 
+			 params.put("q", query);
+			 params.put("rows", "1"); 
+			 solrParams = new MapSolrParams(params);
+			 rsp = solrWrapper.getServer().query(solrParams); 
+			 long nHits2 = rsp.getResults().getNumFound(); //
+			 System.out.println(query+"\t"+nHits2);
+			 
 
 			/* log seems needed */
-			// score += myLog(combinedHits, nHits1, nHits2);
-			if (nHits1 != 0) {
+			 score += myLog(combinedHits, nHits1, nHits2);
+			/*if (nHits1 != 0) {
 				score += (double) combinedHits / nHits1;
-			}
+			}*/
 		}
 		if (choiceNounPhrases.size() > 0) {
-			// score=score/choiceNounPhrases.size();
+			 score=score/choiceNounPhrases.size();
 		}
 		return score;
 	}
