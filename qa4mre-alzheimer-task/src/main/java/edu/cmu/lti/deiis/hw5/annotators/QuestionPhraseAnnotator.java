@@ -15,6 +15,7 @@ import edu.cmu.lti.qalab.types.Question;
 import edu.cmu.lti.qalab.types.QuestionAnswerSet;
 import edu.cmu.lti.qalab.types.TestDocument;
 import edu.cmu.lti.qalab.types.Token;
+import edu.cmu.lti.qalab.types.VerbPhrase;
 import edu.cmu.lti.qalab.utils.Utils;
 
 public class QuestionPhraseAnnotator extends JCasAnnotator_ImplBase{
@@ -43,6 +44,12 @@ public class QuestionPhraseAnnotator extends JCasAnnotator_ImplBase{
 			FSList fsPhraseList=Utils.createNounPhraseList(aJCas, phraseList);
 			fsPhraseList.addToIndexes(aJCas);
 			question.setNounList(fsPhraseList);
+			
+			//verb phrases
+			ArrayList<VerbPhrase> verbPhraseList = extractVerbPhrases(tokenList, aJCas);
+			FSList fsVerbPhraseList = Utils.createVerbPhraseList(aJCas, verbPhraseList);
+			fsVerbPhraseList.addToIndexes();
+			question.setVerbPhraseList(fsVerbPhraseList);
 			question.addToIndexes();
 			questionList.set(i, question);
 		}
@@ -57,6 +64,12 @@ public class QuestionPhraseAnnotator extends JCasAnnotator_ImplBase{
 				FSList fsPhraseList=Utils.createNounPhraseList(aJCas, phraseList);
 				fsPhraseList.addToIndexes(aJCas);							
 				ans.setNounPhraseList(fsPhraseList);
+				
+				//verb phrases
+				ArrayList<VerbPhrase> verbPhraseList = extractVerbPhrases(tokenList, aJCas);
+				FSList fsVerbPhraseList = Utils.createVerbPhraseList(aJCas, verbPhraseList);
+				fsVerbPhraseList.addToIndexes();
+				ans.setVerbPhraseList(fsVerbPhraseList);
 				ans.addToIndexes();
 				choiceList.set(j, ans);
 			}
@@ -114,6 +127,45 @@ public class QuestionPhraseAnnotator extends JCasAnnotator_ImplBase{
 		
 		return nounPhraseList;
 	}
+	
+	
+	public ArrayList<VerbPhrase> extractVerbPhrases(ArrayList<Token> tokenList, JCas jCas) {
+
+	    ArrayList<VerbPhrase> verbPhraseList = new ArrayList<VerbPhrase>();
+	    String verbPhrase = "";
+	    for (int i = 0; i < tokenList.size(); i++) {
+	      Token token = tokenList.get(i);
+	      String word = token.getText();
+	      String pos = token.getPos();
+
+	      // Build a verb phrase by matching POS tags
+	      // Group5 changes: added verbs, modals, particles, adverbs
+	      // TODO: allow prepositions (IN & TO) if at least one verb has already been added
+	      if (pos.startsWith("VB") || pos.startsWith("MD") || pos.startsWith("RP")
+	              || pos.startsWith("RB")) {
+	        verbPhrase += word + " ";
+	      } else {
+	        verbPhrase = verbPhrase.trim();
+	        if (!verbPhrase.equals("")) {
+	          VerbPhrase vv = new VerbPhrase(jCas);
+	          vv.setText(verbPhrase);
+	          verbPhraseList.add(vv);
+	          // System.out.println("VerbPhrase: "+verbPhrase);
+	          verbPhrase = "";
+	        }
+	      }
+
+	    }
+	    verbPhrase = verbPhrase.trim();
+	    if (!verbPhrase.equals("")) {
+	      VerbPhrase vv = new VerbPhrase(jCas);
+	      vv.setText(verbPhrase);
+	      verbPhraseList.add(vv);
+	    }
+
+	    return verbPhraseList;
+	  }
+
 	
 
 }
