@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?><analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
+<?xml version="1.0" encoding="UTF-8"?>
+<analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>false</primitive>
   <delegateAnalysisEngineSpecifiers>
@@ -72,6 +73,7 @@
     <configurationParameterSettings/>
     <flowConstraints>
       <fixedFlow>
+      	<!-- Annotation -->
         <node>TextSegmenter</node>
         <node>StanfordSentenceAnnotator</node>
         <node>NoiseFilter</node>
@@ -83,7 +85,11 @@
         <node>QuestionNEAnnotator</node>
         <!-- <node>SynonymAnnotator</node>-->
         <!-- <node>QASynonymAnnotator</node>-->
+        
+        <!-- Lucene Search Indexer -->
         <node>SolrIndexer</node>
+        
+        <!-- Scoring System -->
         <node>QuestionCandSentSimilarityMatcher</node>
         <!-- <node>QuestionCandSentSynonymMatcher</node> -->        
         <!-- <node>QuestionCandSentDependencyMatcher</node>-->
