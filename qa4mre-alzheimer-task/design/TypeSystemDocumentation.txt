@@ -1,0 +1,89 @@
+Baseline Types System: 
+
+
+1.	Answer(Annotation) : 							Answer to an Q-A set 
+	1.	text (String) : 							Text of the answer
+	2.	id (String) : 								Id of a specific answer
+	3.	questionId(String) : 						the id of a question a specific answer belongs to 
+	4.	docId(String) : 							the id of a document a specific answer belongs to 
+	5.	synonyms(FSList of Synonyms) : 				a list of similar answers? Assuming that the synonyms come from the same document <----
+	6.	isCorrect(Boolean) : 						Is Answer correct? 
+	7.	isSelected(Boolean) : 						Is answer Selected from the retreival system 
+	8.	nounPhraseList( FSList of NounPhrases ) : 	List of Noun phrases in an answer
+	9.	nerList( FSList of NER) : 					List of name entity relations
+	10.	tokenList( FSList of Tokens ) : 			List of Tokens in Answer
+	11.	dependencies( FSList of Dependencies ) : 	List of all the dependencies 
+	=======================================================================================================================================================
+2.	CandidateAnswer ( Annotation ) : 			Potential answer to a question in a particular document
+	1.	qid(String) : 							The id of a question a specific answer belongs to
+	2.	text(String) : 							The text to the candidate answer 
+	3.	choiceIndex(Integer) : 					The rank of the the candidate answer amongst the other candidate answers based of the retrieval system
+	4.	PMIScore(Double) : 						point wise mutual information score? 
+	5.	similarityScore(Double) : 				Similarity score with the question
+	6.	synonymScore(Double) : 					Similarity scoring amongst the synonyms
+	=======================================================================================================================================================
+3.	CandidateQuestion(Annotation) :						related question 
+	1.	relevanceScore(Double) : 						scoring of how relevant 
+	2.	sentence(Sentence) : 							the sentence structure of the question
+	3.	depMatchScore(Double) : 
+	4.	synonymMatchScore(Double) : 				
+	5.	canAnswerList(FSList of CandidateAnswers) : 	The list of answers to the corresponding question list  
+	=======================================================================================================================================================
+4.	Dependency(Annotation) : 
+	1.	governor (Token) : 
+	2.	dependent (Token) : 
+	3.	relation(String) : 
+	=======================================================================================================================================================
+5.	NER(Annotation) : 			name entity recognizer 
+	1.	text(String) : 			content with the recognizer 
+	2.	tag(String) : 			
+	3.	weight(Double) :  		how reliable the name entity recognizer is 
+	=======================================================================================================================================================
+6.	NounPhrase  : 						collection of noun and words associated to a specific noun 
+	1.	text(String) 					phrase string 
+	2.	weight(Double)					strength of the similarity  
+	3.	synonyms (FSList of Synonym)  	list of phrases that are similar
+	=======================================================================================================================================================
+7.	Question (Annotation):						Annotates the question sentences
+	1.	id (String) :							Question ID
+	2.	text (String) :							Text of the question
+	3.	dependencies ( FSList of Token ) :		Dependencies found in the question (Relation, Governor, Dependent)
+	4.	nerList (FSList of NER):				List of named entities
+	5.	nounList (FSList of Noun) :				List of noun phrases
+	6.	tokenList (FSList of Token) : 			List of tokens
+	=======================================================================================================================================================
+8.	QuestionAnswerSet(Annotation) : 						A question and its corresponding answers
+	1.	question :											Question
+	2.	answerList (FSList of Answer) :						A list of the answer choices to the question
+	3.	candidateSentenceList(FSList CandidateSentence) :	A list of the candidate sentences which may contains information about the answer
+	=======================================================================================================================================================
+9.	Sentence (Annotation) :						Annotates a sentence
+	1.	id(String) :							ID of the sentence
+	2.	text(String) :							text of the sentence
+	3.	qualityScore(Double) :					Evaluates how informative a sentence is (not too short, not too many digits or names, could be reference)
+	4.	dependencyList(FSList of Dependency): 	Dependencies found in the question (Relation, Governor, Dependent)
+	5.	tokenList (FSList of Token ) : 			List of tokens
+	6.	bFilter (Boolean) :						Filtered or not (true if quality lower than certain threshold)
+	7.	phraseList (FSList of NounPhrase) :		List of noun phrases
+	8.	nerList (FSList of NER) :				List of named entities
+	=======================================================================================================================================================
+10.	Source Document(Annotation) :			Source Document
+	1.	text (String) :						Text of the document
+	2.	id (String)	:						Document ID
+	3.	filtered (String) :					Filtered document text (unnecessary segments, tables, references, etc removed)
+	4.	sentenceList (FSList of Sentence) :	List of sentences
+	=======================================================================================================================================================
+11.	Synonym (Annotation) :			Synonym of named entities / noun phrases
+	1.	text (String) :				Text of the synonym
+	2.	source (String) :			Stem of the synonyms
+	3.	weight (Double) :			How similar are the synonym and the source
+	=======================================================================================================================================================
+12.	Test Document (Annotation) :				Document containing the qa sets
+	1.	qaList (FSList of QuestionAnswerSet) : 	List of the test Q-A set
+	2.	reading (String) :						Related reading document
+	3.	topicID (String) :						topic
+	=======================================================================================================================================================
+13.	Token (Annotation) :		Tokens in a document
+	1.	text (String) :			Text of the token		
+	2.	pos (String) :			POS tagging (grammatical tagging,  nouns, verbs, adjectives, adverbs, etc) 
+	3.	ner (String) :			Named Entity recognizer
