@@ -16,7 +16,7 @@ Visit our [Wiki](https://github.com/wfeely/hw5-team05/wiki) page
   * Subproject for machine reading evaluation
 * [design](https://github.com/wfeely/hw5-team05/wiki/Project-Design) 
   * Design document for the project
-* [Milestone1](https://github.com/wfeely/hw5-team05/wiki/Milestone-1)
+* [milestone1](https://github.com/wfeely/hw5-team05/wiki/Milestone-1)
   * [New] Wiki page for baseline system 
 * [test](https://github.com/wfeely/hw5-team05/tree/master/qa4mre-base/src/test) 
   * A directory for unit tests. 
