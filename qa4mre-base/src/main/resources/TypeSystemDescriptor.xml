@@ -302,6 +302,12 @@
           <rangeTypeName>uima.cas.FSList</rangeTypeName>
           <elementType>edu.cmu.lti.qalab.types.Token</elementType>
         </featureDescription>
+      <featureDescription>
+          <name>verbPhraseList</name>
+          <description/>
+          <rangeTypeName>uima.cas.FSList</rangeTypeName>
+          <elementType>edu.cmu.lti.qalab.types.VerbPhrase</elementType>
+        </featureDescription>
       </features>
     </typeDescription>
     <typeDescription>

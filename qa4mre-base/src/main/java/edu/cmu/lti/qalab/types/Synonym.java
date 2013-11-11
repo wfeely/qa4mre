@@ -12,8 +12,8 @@ import org.apache.uima.jcas.tcas.Annotation;
 
 
 /** 
- * Updated by JCasGen Sat Nov 09 15:54:44 EST 2013
- * XML source: /home/hermes/git/hw5-team05/qa4mre-base/src/main/resources/TypeSystemDescriptor.xml
+ * Updated by JCasGen Sun Nov 10 20:19:59 EST 2013
+ * XML source: /Users/Chris/Documents/Workspace/qa4mre/qa4mre-base/src/main/resources/TypeSystemDescriptor.xml
  * @generated */
 public class Synonym extends Annotation {
   /** @generated
