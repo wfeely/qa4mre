@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<styleMap>
+<rule>
+<pattern>edu.cmu.lti.qalab.types.Sentence</pattern>
+<label>Sentence</label>
+<style>color:black; background:lightblue;</style>
+</rule>
+<rule>
+<pattern>edu.cmu.lti.qalab.types.SourceDocument</pattern>
+<label>SourceDocument</label>
+<style>color:black; background:lightgreen;</style>
+</rule>
+<rule>
+<pattern>edu.cmu.lti.qalab.types.NounPhrase</pattern>
+<label>NounPhrase</label>
+<style>color:black; background:orange;</style>
+</rule>
+<rule>
+<pattern>edu.cmu.lti.qalab.types.NER</pattern>
+<label>NER</label>
+<style>color:black; background:yellow;</style>
+</rule>
+<rule>
+<pattern>edu.cmu.lti.qalab.types.Token</pattern>
+<label>Token</label>
+<style>color:black; background:pink;</style>
+</rule>
+<rule>
+<pattern>edu.cmu.lti.qalab.types.Dependency</pattern>
+<label>Dependency</label>
+<style>color:black; background:salmon;</style>
+</rule>
+<rule>
+<pattern>edu.cmu.lti.qalab.types.Answer</pattern>
+<label>Answer</label>
+<style>color:black; background:cyan;</style>
+</rule>
+<rule>
+<pattern>edu.cmu.lti.qalab.types.Question</pattern>
+<label>Question</label>
+<style>color:black; background:violet;</style>
+</rule>
+<rule>
+<pattern>edu.cmu.lti.qalab.types.Synonym</pattern>
+<label>Synonym</label>
+<style>color:black; background:tan;</style>
+</rule>
+<rule>
+<pattern>edu.cmu.lti.qalab.types.TestDocument</pattern>
+<label>TestDocument</label>
+<style>color:white; background:brown;</style>
+</rule>
+<rule>
+<pattern>edu.cmu.lti.qalab.types.QuestionAnswerSet</pattern>
+<label>QuestionAnswerSet</label>
+<style>color:white; background:blue;</style>
+</rule>
+<rule>
+<pattern>edu.cmu.lti.qalab.types.CandidateSentence</pattern>
+<label>CandidateSentence</label>
+<style>color:white; background:green;</style>
+</rule>
+<rule>
+<pattern>edu.cmu.lti.qalab.types.CandidateAnswer</pattern>
+<label>CandidateAnswer</label>
+<style>color:white; background:red;</style>
+</rule>
+</styleMap>
+
