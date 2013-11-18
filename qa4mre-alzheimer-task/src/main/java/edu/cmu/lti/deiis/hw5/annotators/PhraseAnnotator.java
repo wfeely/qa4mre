@@ -71,15 +71,22 @@ public class PhraseAnnotator extends JCasAnnotator_ImplBase {
 
       // Build a noun phrase by matching POS tags
       // Group5 changes: added determiners, pronouns, possessive pronouns, possessive markers,
-      // adverbs to list of allowable NP POS tags
-      // TODO: allow prepositions (IN & TO) if at least one noun has already been added
-      if (pos.startsWith("NN") || pos.startsWith("JJ") || pos.startsWith("CD")
-              || pos.startsWith("DT") || pos.startsWith("PDT") || pos.startsWith("RB")
-              || pos.startsWith("PRP") || pos.startsWith("POS")) {
+      // adverbs to list of allowable NP POS tags; ensured each NP contains a noun
+      boolean head = false;
+      if (pos.startsWith("NN")) {
+        // found a noun; mark head as true
+        head = true;
+        // build up NP
+        nounPhrase += word + " ";
+      } else if (pos.startsWith("JJ") || pos.startsWith("CD") || pos.startsWith("DT")
+              || pos.startsWith("PDT") || pos.startsWith("RB") || pos.startsWith("PRP")
+              || pos.startsWith("POS")) {
+        // build up NP
         nounPhrase += word + " ";
       } else {
         nounPhrase = nounPhrase.trim();
-        if (!nounPhrase.equals("")) {
+        // make sure NP isn't empty and make sure we have at least one noun in the NP
+        if (!nounPhrase.equals("") && head) {
           NounPhrase nn = new NounPhrase(jCas);
           nn.setText(nounPhrase);
           nounPhraseList.add(nn);
@@ -109,14 +116,21 @@ public class PhraseAnnotator extends JCasAnnotator_ImplBase {
       String pos = token.getPos();
 
       // Build a verb phrase by matching POS tags
-      // Group5 changes: added verbs, modals, particles, adverbs
-      // TODO: allow prepositions (IN & TO) if at least one verb has already been added
-      if (pos.startsWith("VB") || pos.startsWith("MD") || pos.startsWith("RP")
-              || pos.startsWith("RB")) {
+      // Group5 changes: added verbs, modals, particles, adverbs; ensured each VP contains at least
+      // one verb
+      boolean head = false;
+      if (pos.startsWith("VB")) {
+        // found a verb; mark head as true
+        head = true;
+        // build up VP
+        verbPhrase += word + " ";
+      } else if (pos.startsWith("MD") || pos.startsWith("RP") || pos.startsWith("RB")) {
+        // build up VP
         verbPhrase += word + " ";
       } else {
         verbPhrase = verbPhrase.trim();
-        if (!verbPhrase.equals("")) {
+        // make sure VP isn't empty and make sure we have at least one verb in the VP
+        if (!verbPhrase.equals("") && head) {
           VerbPhrase vv = new VerbPhrase(jCas);
           vv.setText(verbPhrase);
           verbPhraseList.add(vv);
