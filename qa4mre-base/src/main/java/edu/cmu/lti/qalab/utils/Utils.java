@@ -30,194 +30,184 @@ import edu.cmu.lti.qalab.types.VerbPhrase;
 import edu.stanford.nlp.trees.semgraph.SemanticGraphEdge;
 
 public class Utils {
-	/**
-	 * Creates FeatureStructure List from sentenceList
-	 * 
-	 * @param <T>
-	 * 
-	 * @param aJCas
-	 * @param aCollection
-	 * @return FSList
-	 */
+  /**
+   * Creates FeatureStructure List from sentenceList
+   * 
+   * @param <T>
+   * 
+   * @param aJCas
+   * @param aCollection
+   * @return FSList
+   */
 
-	public static FSList createSentenceList(JCas aJCas,
-			Collection<Sentence> aCollection) {
-		if (aCollection.size() == 0) {
-			return new EmptyFSList(aJCas);
-		}
+  public static FSList createSentenceList(JCas aJCas, Collection<Sentence> aCollection) {
+    if (aCollection.size() == 0) {
+      return new EmptyFSList(aJCas);
+    }
 
-		NonEmptyFSList head = new NonEmptyFSList(aJCas);
-		NonEmptyFSList list = head;
-		Iterator<Sentence> i = aCollection.iterator();
-		while (i.hasNext()) {
-			head.setHead(i.next());
-			if (i.hasNext()) {
-				head.setTail(new NonEmptyFSList(aJCas));
-				head = (NonEmptyFSList) head.getTail();
-			} else {
-				head.setTail(new EmptyFSList(aJCas));
-			}
-		}
+    NonEmptyFSList head = new NonEmptyFSList(aJCas);
+    NonEmptyFSList list = head;
+    Iterator<Sentence> i = aCollection.iterator();
+    while (i.hasNext()) {
+      head.setHead(i.next());
+      if (i.hasNext()) {
+        head.setTail(new NonEmptyFSList(aJCas));
+        head = (NonEmptyFSList) head.getTail();
+      } else {
+        head.setTail(new EmptyFSList(aJCas));
+      }
+    }
 
-		return list;
-	}
-	
-	/**
-	 * Creates FeatureStructure List from questionList
-	 * 
-	 * @param <T>
-	 * 
-	 * @param aJCas
-	 * @param aCollection
-	 * @return FSList
-	 */
+    return list;
+  }
 
-	public static FSList createQuestionList(JCas aJCas,
-			Collection<Question> aCollection) {
-		if (aCollection.size() == 0) {
-			return new EmptyFSList(aJCas);
-		}
+  /**
+   * Creates FeatureStructure List from questionList
+   * 
+   * @param <T>
+   * 
+   * @param aJCas
+   * @param aCollection
+   * @return FSList
+   */
 
-		NonEmptyFSList head = new NonEmptyFSList(aJCas);
-		NonEmptyFSList list = head;
-		Iterator<Question> i = aCollection.iterator();
-		while (i.hasNext()) {
-			head.setHead(i.next());
-			if (i.hasNext()) {
-				head.setTail(new NonEmptyFSList(aJCas));
-				head = (NonEmptyFSList) head.getTail();
-			} else {
-				head.setTail(new EmptyFSList(aJCas));
-			}
-		}
+  public static FSList createQuestionList(JCas aJCas, Collection<Question> aCollection) {
+    if (aCollection.size() == 0) {
+      return new EmptyFSList(aJCas);
+    }
 
-		return list;
-	}
+    NonEmptyFSList head = new NonEmptyFSList(aJCas);
+    NonEmptyFSList list = head;
+    Iterator<Question> i = aCollection.iterator();
+    while (i.hasNext()) {
+      head.setHead(i.next());
+      if (i.hasNext()) {
+        head.setTail(new NonEmptyFSList(aJCas));
+        head = (NonEmptyFSList) head.getTail();
+      } else {
+        head.setTail(new EmptyFSList(aJCas));
+      }
+    }
 
-	
-	
-	public static <T extends TOP> ArrayList<T> fromFSListToCollection(FSList list,
-			Class<T> classType) {
+    return list;
+  }
 
-	
-		Collection<T> myCollection = JCasUtil.select(list, classType);
-		/*
-		 * for(T element:myCollection){ System.out.println(.getText()); }
-		 */
+  public static <T extends TOP> ArrayList<T> fromFSListToCollection(FSList list, Class<T> classType) {
 
-		return new ArrayList<T>(myCollection);
-	}
-	
-	public static <T extends Annotation> FSList fromCollectionToFSList(JCas aJCas,
-			Collection<T> aCollection) {
-		if (aCollection.size() == 0) {
-			return new EmptyFSList(aJCas);
-		}
+    Collection<T> myCollection = JCasUtil.select(list, classType);
+    /*
+     * for(T element:myCollection){ System.out.println(.getText()); }
+     */
 
-		NonEmptyFSList head = new NonEmptyFSList(aJCas);
-		NonEmptyFSList list = head;
-		Iterator<T> i = aCollection.iterator();
-		while (i.hasNext()) {
-			head.setHead(i.next());
-			if (i.hasNext()) {
-				head.setTail(new NonEmptyFSList(aJCas));
-				head = (NonEmptyFSList) head.getTail();
-			} else {
-				head.setTail(new EmptyFSList(aJCas));
-			}
-		}
+    return new ArrayList<T>(myCollection);
+  }
 
-		return list;
-	}
+  public static <T extends Annotation> FSList fromCollectionToFSList(JCas aJCas,
+          Collection<T> aCollection) {
+    if (aCollection.size() == 0) {
+      return new EmptyFSList(aJCas);
+    }
 
-	
-	/**
-	 * Creates FeatureStructure List from questionList
-	 * 
-	 * @param <T>
-	 * 
-	 * @param aJCas
-	 * @param aCollection
-	 * @return FSList
-	 */
+    NonEmptyFSList head = new NonEmptyFSList(aJCas);
+    NonEmptyFSList list = head;
+    Iterator<T> i = aCollection.iterator();
+    while (i.hasNext()) {
+      head.setHead(i.next());
+      if (i.hasNext()) {
+        head.setTail(new NonEmptyFSList(aJCas));
+        head = (NonEmptyFSList) head.getTail();
+      } else {
+        head.setTail(new EmptyFSList(aJCas));
+      }
+    }
 
-	public static FSList createQuestionAnswerSet(JCas aJCas,
-			Collection<QuestionAnswerSet> aCollection) {
-		if (aCollection.size() == 0) {
-			return new EmptyFSList(aJCas);
-		}
+    return list;
+  }
 
-		NonEmptyFSList head = new NonEmptyFSList(aJCas);
-		NonEmptyFSList list = head;
-		Iterator<QuestionAnswerSet> i = aCollection.iterator();
-		while (i.hasNext()) {
-			head.setHead(i.next());
-			if (i.hasNext()) {
-				head.setTail(new NonEmptyFSList(aJCas));
-				head = (NonEmptyFSList) head.getTail();
-			} else {
-				head.setTail(new EmptyFSList(aJCas));
-			}
-		}
+  /**
+   * Creates FeatureStructure List from questionList
+   * 
+   * @param <T>
+   * 
+   * @param aJCas
+   * @param aCollection
+   * @return FSList
+   */
 
-		return list;
-	}
+  public static FSList createQuestionAnswerSet(JCas aJCas, Collection<QuestionAnswerSet> aCollection) {
+    if (aCollection.size() == 0) {
+      return new EmptyFSList(aJCas);
+    }
 
+    NonEmptyFSList head = new NonEmptyFSList(aJCas);
+    NonEmptyFSList list = head;
+    Iterator<QuestionAnswerSet> i = aCollection.iterator();
+    while (i.hasNext()) {
+      head.setHead(i.next());
+      if (i.hasNext()) {
+        head.setTail(new NonEmptyFSList(aJCas));
+        head = (NonEmptyFSList) head.getTail();
+      } else {
+        head.setTail(new EmptyFSList(aJCas));
+      }
+    }
 
+    return list;
+  }
 
-	/**
-	 * @param aJCas
-	 * @param aCollection
-	 * @return
-	 */
-	public static FSList createTokenList(JCas aJCas, Collection<Token> aCollection) {
-		if (aCollection.size() == 0) {
-			return new EmptyFSList(aJCas);
-		}
+  /**
+   * @param aJCas
+   * @param aCollection
+   * @return
+   */
+  public static FSList createTokenList(JCas aJCas, Collection<Token> aCollection) {
+    if (aCollection.size() == 0) {
+      return new EmptyFSList(aJCas);
+    }
 
-		NonEmptyFSList head = new NonEmptyFSList(aJCas);
-		NonEmptyFSList list = head;
-		Iterator<Token> i = aCollection.iterator();
-		while (i.hasNext()) {
-			head.setHead(i.next());
-			if (i.hasNext()) {				
-				head.setTail(new NonEmptyFSList(aJCas));
-				head = (NonEmptyFSList) head.getTail();
-			} else {
-				head.setTail(new EmptyFSList(aJCas));
-			}
-		}
+    NonEmptyFSList head = new NonEmptyFSList(aJCas);
+    NonEmptyFSList list = head;
+    Iterator<Token> i = aCollection.iterator();
+    while (i.hasNext()) {
+      head.setHead(i.next());
+      if (i.hasNext()) {
+        head.setTail(new NonEmptyFSList(aJCas));
+        head = (NonEmptyFSList) head.getTail();
+      } else {
+        head.setTail(new EmptyFSList(aJCas));
+      }
+    }
 
-		return list;
-	}
+    return list;
+  }
 
-	/**
-	 * @param aJCas
-	 * @param aCollection
-	 * @return
-	 */
-	public static FSList createNounPhraseList(JCas aJCas, Collection<NounPhrase> aCollection) {
-		if (aCollection.size() == 0) {
-			return new EmptyFSList(aJCas);
-		}
+  /**
+   * @param aJCas
+   * @param aCollection
+   * @return
+   */
+  public static FSList createNounPhraseList(JCas aJCas, Collection<NounPhrase> aCollection) {
+    if (aCollection.size() == 0) {
+      return new EmptyFSList(aJCas);
+    }
 
-		NonEmptyFSList head = new NonEmptyFSList(aJCas);
-		NonEmptyFSList list = head;
-		Iterator<NounPhrase> i = aCollection.iterator();
-		while (i.hasNext()) {
-			head.setHead(i.next());
-			if (i.hasNext()) {				
-				head.setTail(new NonEmptyFSList(aJCas));
-				head = (NonEmptyFSList) head.getTail();
-			} else {
-				head.setTail(new EmptyFSList(aJCas));
-			}
-		}
+    NonEmptyFSList head = new NonEmptyFSList(aJCas);
+    NonEmptyFSList list = head;
+    Iterator<NounPhrase> i = aCollection.iterator();
+    while (i.hasNext()) {
+      head.setHead(i.next());
+      if (i.hasNext()) {
+        head.setTail(new NonEmptyFSList(aJCas));
+        head = (NonEmptyFSList) head.getTail();
+      } else {
+        head.setTail(new EmptyFSList(aJCas));
+      }
+    }
 
-		return list;
-	}
-	
-	 /**
+    return list;
+  }
+
+  /**
    * @param aJCas
    * @param aCollection
    * @return
@@ -232,7 +222,7 @@ public class Utils {
     Iterator<VerbPhrase> i = aCollection.iterator();
     while (i.hasNext()) {
       head.setHead(i.next());
-      if (i.hasNext()) {        
+      if (i.hasNext()) {
         head.setTail(new NonEmptyFSList(aJCas));
         head = (NonEmptyFSList) head.getTail();
       } else {
@@ -243,336 +233,340 @@ public class Utils {
     return list;
   }
 
-	/**
-	 * @param aJCas
-	 * @param aCollection
-	 * @return
-	 */
-	public static FSList createNERList(JCas aJCas, Collection<NER> aCollection) {
-		if (aCollection.size() == 0) {
-			return new EmptyFSList(aJCas);
-		}
+  /**
+   * @param aJCas
+   * @param aCollection
+   * @return
+   */
+  public static FSList createNERList(JCas aJCas, Collection<NER> aCollection) {
+    if (aCollection.size() == 0) {
+      return new EmptyFSList(aJCas);
+    }
 
-		NonEmptyFSList head = new NonEmptyFSList(aJCas);
-		NonEmptyFSList list = head;
-		Iterator<NER> i = aCollection.iterator();
-		while (i.hasNext()) {
-			head.setHead(i.next());
-			if (i.hasNext()) {				
-				head.setTail(new NonEmptyFSList(aJCas));
-				head = (NonEmptyFSList) head.getTail();
-			} else {
-				head.setTail(new EmptyFSList(aJCas));
-			}
-		}
+    NonEmptyFSList head = new NonEmptyFSList(aJCas);
+    NonEmptyFSList list = head;
+    Iterator<NER> i = aCollection.iterator();
+    while (i.hasNext()) {
+      head.setHead(i.next());
+      if (i.hasNext()) {
+        head.setTail(new NonEmptyFSList(aJCas));
+        head = (NonEmptyFSList) head.getTail();
+      } else {
+        head.setTail(new EmptyFSList(aJCas));
+      }
+    }
 
-		return list;
-	}
+    return list;
+  }
 
+  public static FSList createDependencyList(JCas aJCas, Collection<SemanticGraphEdge> aCollection) {
+    if (aCollection.size() == 0) {
+      return new EmptyFSList(aJCas);
+    }
 
-	public static FSList createDependencyList(JCas aJCas,
-			Collection<SemanticGraphEdge> aCollection) {
-		if (aCollection.size() == 0) {
-			return new EmptyFSList(aJCas);
-		}
+    NonEmptyFSList head = new NonEmptyFSList(aJCas);
+    NonEmptyFSList list = head;
+    Iterator<SemanticGraphEdge> i = aCollection.iterator();
+    while (i.hasNext()) {
+      SemanticGraphEdge edge = i.next();
+      Dependency dep = new Dependency(aJCas);
 
-		NonEmptyFSList head = new NonEmptyFSList(aJCas);
-		NonEmptyFSList list = head;
-		Iterator<SemanticGraphEdge> i = aCollection.iterator();
-		while (i.hasNext()) {
-			SemanticGraphEdge edge = i.next();
-			Dependency dep = new Dependency(aJCas);
+      Token governorToken = new Token(aJCas);
+      governorToken.setText(edge.getGovernor().originalText());
+      governorToken.setPos(edge.getGovernor().tag());
+      governorToken.setNer(edge.getGovernor().ner());
+      governorToken.addToIndexes();
+      dep.setGovernor(governorToken);
 
-			Token governorToken = new Token(aJCas);			
-			governorToken.setText(edge.getGovernor().originalText());
-			governorToken.setPos(edge.getGovernor().tag());
-			governorToken.setNer(edge.getGovernor().ner());
-			governorToken.addToIndexes();
-			dep.setGovernor(governorToken);
+      Token dependentToken = new Token(aJCas);
+      dependentToken.setText(edge.getDependent().originalText());
+      dependentToken.setPos(edge.getDependent().tag());
+      dependentToken.setNer(edge.getDependent().ner());
+      dependentToken.addToIndexes();
+      dep.setDependent(dependentToken);
 
-			Token dependentToken = new Token(aJCas);
-			dependentToken.setText(edge.getDependent().originalText());
-			dependentToken.setPos(edge.getDependent().tag());
-			dependentToken.setNer(edge.getDependent().ner());
-			dependentToken.addToIndexes();
-			dep.setDependent(dependentToken);
+      dep.setRelation(edge.getRelation().toString());
+      dep.addToIndexes();
 
-			dep.setRelation(edge.getRelation().toString());
-			dep.addToIndexes();
+      head.setHead(dep);
+      if (i.hasNext()) {
+        head.setTail(new NonEmptyFSList(aJCas));
+        head = (NonEmptyFSList) head.getTail();
+      } else {
+        head.setTail(new EmptyFSList(aJCas));
+      }
+    }
 
-			head.setHead(dep);
-			if (i.hasNext()) {
-				head.setTail(new NonEmptyFSList(aJCas));
-				head = (NonEmptyFSList) head.getTail();
-			} else {
-				head.setTail(new EmptyFSList(aJCas));
-			}
-		}
+    return list;
+  }
 
-		return list;
-	}
+  public static SourceDocument getSourceDocumentFromCAS(JCas jCas) {
+    FSIterator it = jCas.getAnnotationIndex(SourceDocument.type).iterator();
+    SourceDocument srcDoc = null;
+    if (it.hasNext()) {
+      srcDoc = (SourceDocument) it.next();
+    }
+    return srcDoc;
+  }
 
-	public static SourceDocument getSourceDocumentFromCAS(JCas jCas) {
-		FSIterator it = jCas.getAnnotationIndex(SourceDocument.type).iterator();
-		SourceDocument srcDoc = null;
-		if (it.hasNext()) {
-			srcDoc = (SourceDocument) it.next();
-		}
-		return srcDoc;
-	}
-	
-	
-	
-	
+  public static ArrayList<Sentence> getSentenceListFromTestDocCAS(JCas jCas) {
 
-	public static ArrayList<Sentence> getSentenceListFromTestDocCAS(JCas jCas) {
+    TestDocument testDoc = Utils.getTestDocumentFromCAS(jCas);
+    FSList sentList = testDoc.getSentenceList();
+    ArrayList<Sentence> sentenceList = new ArrayList<Sentence>();
+    int i = 0;
+    while (true) {
 
-		TestDocument testDoc = Utils.getTestDocumentFromCAS(jCas);
-		FSList sentList = testDoc.getSentenceList();
-		ArrayList<Sentence> sentenceList = new ArrayList<Sentence>();
-		int i = 0;
-		while (true) {
+      Sentence sentence = null;
+      try {
+        sentence = (Sentence) sentList.getNthElement(i);
+      } catch (Exception e) {
+        break;
+      }
+      sentenceList.add(sentence);
+      i++;
+    }
 
-			Sentence sentence = null;
-			try {
-				sentence = (Sentence) sentList.getNthElement(i);
-			} catch (Exception e) {
-				break;
-			}
-			sentenceList.add(sentence);
-			i++;
-		}
+    return sentenceList;
+  }
 
-		return sentenceList;
-	}
-	
-	public static ArrayList<QuestionAnswerSet> getQuestionAnswerSetFromTestDocCAS(JCas jCas) {
+  public static ArrayList<QuestionAnswerSet> getQuestionAnswerSetFromTestDocCAS(JCas jCas) {
 
-		TestDocument testDoc = Utils.getTestDocumentFromCAS(jCas);
-		FSList fsQAList = testDoc.getQaList();
-		ArrayList<QuestionAnswerSet> qaSetList = new ArrayList<QuestionAnswerSet>();
-		int i = 0;
-		while (true) {
+    TestDocument testDoc = Utils.getTestDocumentFromCAS(jCas);
+    FSList fsQAList = testDoc.getQaList();
+    ArrayList<QuestionAnswerSet> qaSetList = new ArrayList<QuestionAnswerSet>();
+    int i = 0;
+    while (true) {
 
-			QuestionAnswerSet qaSet = null;
-			try {
-				qaSet = (QuestionAnswerSet) fsQAList.getNthElement(i);
-				
-			} catch (Exception e) {
-				break;
-			}
-			qaSetList.add(qaSet);
-			i++;
-		}
+      QuestionAnswerSet qaSet = null;
+      try {
+        qaSet = (QuestionAnswerSet) fsQAList.getNthElement(i);
 
-		return qaSetList;
-	}
+      } catch (Exception e) {
+        break;
+      }
+      qaSetList.add(qaSet);
+      i++;
+    }
 
-	
-	public static ArrayList<Question> getQuestionListFromTestDocCAS(JCas jCas) {
+    return qaSetList;
+  }
 
-		TestDocument testDoc = Utils.getTestDocumentFromCAS(jCas);
-		FSList fsQAList = testDoc.getQaList();
-		ArrayList<Question> questionList = new ArrayList<Question>();
-		int i = 0;
-		while (true) {
+  public static ArrayList<Question> getQuestionListFromTestDocCAS(JCas jCas) {
 
-			Question question = null;
-			try {
-				QuestionAnswerSet qaSet = (QuestionAnswerSet) fsQAList.getNthElement(i);
-				question=qaSet.getQuestion();
-			} catch (Exception e) {
-				break;
-			}
-			questionList.add(question);
-			i++;
-		}
+    TestDocument testDoc = Utils.getTestDocumentFromCAS(jCas);
+    FSList fsQAList = testDoc.getQaList();
+    ArrayList<Question> questionList = new ArrayList<Question>();
+    int i = 0;
+    while (true) {
 
-		return questionList;
-	}
-	public static ArrayList<ArrayList<Answer>> getAnswerListFromTestDocCAS(JCas jCas) {
+      Question question = null;
+      try {
+        QuestionAnswerSet qaSet = (QuestionAnswerSet) fsQAList.getNthElement(i);
+        question = qaSet.getQuestion();
+      } catch (Exception e) {
+        break;
+      }
+      questionList.add(question);
+      i++;
+    }
 
-		TestDocument testDoc = Utils.getTestDocumentFromCAS(jCas);
-		FSList fsQAList = testDoc.getQaList();
-		
-		ArrayList<ArrayList<Answer>> answerList = new ArrayList<ArrayList<Answer>>();
-		int i = 0;
-		while (true) {
+    return questionList;
+  }
 
-			ArrayList<Answer> answerChoiceList = null;
-			try {
-				QuestionAnswerSet qaSet = (QuestionAnswerSet) fsQAList.getNthElement(i);
-			
-				answerChoiceList=Utils.fromFSListToCollection(qaSet.getAnswerList(),Answer.class);
-				
-			} catch (Exception e) {
-				break;
-			}
-			answerList.add(answerChoiceList);
-			i++;
-		}
+  public static ArrayList<ArrayList<Answer>> getAnswerListFromTestDocCAS(JCas jCas) {
 
-		return answerList;
-	}
+    TestDocument testDoc = Utils.getTestDocumentFromCAS(jCas);
+    FSList fsQAList = testDoc.getQaList();
 
-	public static ArrayList<Token> getTokenListFromSentenceList(Sentence sentence) {
+    ArrayList<ArrayList<Answer>> answerList = new ArrayList<ArrayList<Answer>>();
+    int i = 0;
+    while (true) {
 
-		FSList fsTokenList=sentence.getTokenList();
-		ArrayList<Token> tokenList = new ArrayList<Token>();
-		int i = 0;
-		while (true) {
+      ArrayList<Answer> answerChoiceList = null;
+      try {
+        QuestionAnswerSet qaSet = (QuestionAnswerSet) fsQAList.getNthElement(i);
 
-			Token token = null;
-			try {
-				token = (Token) fsTokenList.getNthElement(i);
-			} catch (Exception e) {
-				break;
-			}
-			tokenList.add(token);
-			i++;
-		}
+        answerChoiceList = Utils.fromFSListToCollection(qaSet.getAnswerList(), Answer.class);
 
-		return tokenList;
-	}
-	
-	public static ArrayList<NounPhrase> getNounPhraseListFromQuestionList(Question question) {
+      } catch (Exception e) {
+        break;
+      }
+      answerList.add(answerChoiceList);
+      i++;
+    }
 
-		FSList fsNounList=question.getNounList();
-		ArrayList<NounPhrase> nounPhraseList = new ArrayList<NounPhrase>();
-		int i = 0;
-		while (true) {
+    return answerList;
+  }
 
-			NounPhrase nounPhrase = null;
-			try {
-				nounPhrase = (NounPhrase) fsNounList.getNthElement(i);
-			} catch (Exception e) {
-				break;
-			}
-			nounPhraseList.add(nounPhrase);
-			i++;
-		}
+  public static ArrayList<Token> getTokenListFromSentenceList(Sentence sentence) {
 
-		return nounPhraseList;
-	}
+    FSList fsTokenList = sentence.getTokenList();
+    ArrayList<Token> tokenList = new ArrayList<Token>();
+    int i = 0;
+    while (true) {
 
+      Token token = null;
+      try {
+        token = (Token) fsTokenList.getNthElement(i);
+      } catch (Exception e) {
+        break;
+      }
+      tokenList.add(token);
+      i++;
+    }
 
-	public static ArrayList<Token> getTokenListFromQuestion(Question question) {
+    return tokenList;
+  }
 
-		FSList fsTokenList=question.getTokenList();
-		ArrayList<Token> tokenList = new ArrayList<Token>();
-		int i = 0;
-		while (true) {
+  public static ArrayList<NounPhrase> getNounPhraseListFromQuestionList(Question question) {
 
-			Token token = null;
-			try {
-				token = (Token) fsTokenList.getNthElement(i);
-			} catch (Exception e) {
-				break;
-			}
-			tokenList.add(token);
-			i++;
-		}
+    FSList fsNounList = question.getNounList();
+    ArrayList<NounPhrase> nounPhraseList = new ArrayList<NounPhrase>();
+    int i = 0;
+    while (true) {
 
-		return tokenList;
-	}
+      NounPhrase nounPhrase = null;
+      try {
+        nounPhrase = (NounPhrase) fsNounList.getNthElement(i);
+      } catch (Exception e) {
+        break;
+      }
+      nounPhraseList.add(nounPhrase);
+      i++;
+    }
 
-	public static ArrayList<Token> getTokenListFromAnswer(Answer answer) {
+    return nounPhraseList;
+  }
 
-		FSList fsTokenList=answer.getTokenList();
-		ArrayList<Token> tokenList = new ArrayList<Token>();
-		int i = 0;
-		while (true) {
+  public static ArrayList<Token> getTokenListFromQuestion(Question question) {
 
-			Token token = null;
-			try {
-				token = (Token) fsTokenList.getNthElement(i);
-			} catch (Exception e) {
-				break;
-			}
-			tokenList.add(token);
-			i++;
-		}
+    FSList fsTokenList = question.getTokenList();
+    ArrayList<Token> tokenList = new ArrayList<Token>();
+    int i = 0;
+    while (true) {
 
-		return tokenList;
-	}
+      Token token = null;
+      try {
+        token = (Token) fsTokenList.getNthElement(i);
+      } catch (Exception e) {
+        break;
+      }
+      tokenList.add(token);
+      i++;
+    }
 
-	public static ArrayList<Sentence> getSentenceListFromSourceDocCAS(JCas jCas) {
+    return tokenList;
+  }
 
-		SourceDocument srcDoc = Utils.getSourceDocumentFromCAS(jCas);
-		FSList sentList = srcDoc.getSentenceList();
-		ArrayList<Sentence> sentenceList = new ArrayList<Sentence>();
-		int i = 0;
-		while (true) {
+  public static ArrayList<Token> getTokenListFromAnswer(Answer answer) {
 
-			Sentence sentence = null;
-			try {
-				sentence = (Sentence) sentList.getNthElement(i);
-			} catch (Exception e) {
-				break;
-			}
-			sentenceList.add(sentence);
-			i++;
-		}
+    FSList fsTokenList = answer.getTokenList();
+    ArrayList<Token> tokenList = new ArrayList<Token>();
+    int i = 0;
+    while (true) {
 
-		return sentenceList;
-	}
+      Token token = null;
+      try {
+        token = (Token) fsTokenList.getNthElement(i);
+      } catch (Exception e) {
+        break;
+      }
+      tokenList.add(token);
+      i++;
+    }
 
-	
-	public static TestDocument getTestDocumentFromCAS(JCas jCas) {
-		FSIterator it = jCas.getAnnotationIndex(TestDocument.type).iterator();
-		TestDocument srcDoc = null;
-		if (it.hasNext()) {
-			srcDoc = (TestDocument) it.next();
-		}
-		return srcDoc;
-	}
-	public static CandidateSentence getCandidateSentenceFromCAS(JCas jCas) {
-		FSIterator it = jCas.getAnnotationIndex(CandidateSentence.type).iterator();
-		CandidateSentence candSent = null;
-		if (it.hasNext()) {
-			candSent = (CandidateSentence) it.next();
-		}
-		return candSent;
-	}
-	
-	public static boolean isInsideBracket(ArrayList<Brackets>bracketedList,int pos){
-		
-		boolean isInside=false;
-		for(int i=0;i<bracketedList.size();i++){
-			int start=bracketedList.get(i).getStart();
-			int end=bracketedList.get(i).getEnd();
-			
-			if(pos>=start && pos<=end){
-				isInside=true;
-				break;
-			}
-			
-			if(start>pos){
-				break;
-			}
-		}
-		return isInside;
-	}
+    return tokenList;
+  }
 
-	public static ArrayList<Brackets> findBrackatedExpression(String docText)
-			throws Exception {
+  public static ArrayList<Sentence> getSentenceListFromSourceDocCAS(JCas jCas) {
 
-		Pattern pattern = Pattern.compile("[(].*?[)]");
-		Matcher matcher = pattern.matcher(docText);
-		ArrayList<Brackets> bracketList = new ArrayList<Brackets>();
+    SourceDocument srcDoc = Utils.getSourceDocumentFromCAS(jCas);
+    FSList sentList = srcDoc.getSentenceList();
+    ArrayList<Sentence> sentenceList = new ArrayList<Sentence>();
+    int i = 0;
+    while (true) {
 
-		while (matcher.find()) {
-			String matched = matcher.group();
-			int start = matcher.start();
-			int end = matcher.end();
-			Brackets brackets = new Brackets(matched, start, end);
-			//System.out.println("******Bracket\t"+matched+"\t"+start+"\t"+end);
-			bracketList.add(brackets);
-		}
+      Sentence sentence = null;
+      try {
+        sentence = (Sentence) sentList.getNthElement(i);
+      } catch (Exception e) {
+        break;
+      }
+      sentenceList.add(sentence);
+      i++;
+    }
 
-		return bracketList;
+    return sentenceList;
+  }
 
-	}
+  public static TestDocument getTestDocumentFromCAS(JCas jCas) {
+    FSIterator it = jCas.getAnnotationIndex(TestDocument.type).iterator();
+    TestDocument srcDoc = null;
+    if (it.hasNext()) {
+      srcDoc = (TestDocument) it.next();
+    }
+    return srcDoc;
+  }
 
-	
+  public static CandidateSentence getCandidateSentenceFromCAS(JCas jCas) {
+    FSIterator it = jCas.getAnnotationIndex(CandidateSentence.type).iterator();
+    CandidateSentence candSent = null;
+    if (it.hasNext()) {
+      candSent = (CandidateSentence) it.next();
+    }
+    return candSent;
+  }
+
+  /**
+   * Checks whether the given position is within a bracket
+   * 
+   * @param bracketedList
+   * @param pos
+   * @return
+   * 
+   * @see findBrackatedExpression
+   */
+  public static boolean isInsideBracket(ArrayList<Brackets> bracketedList, int pos) {
+
+    boolean isInside = false;
+    for (int i = 0; i < bracketedList.size(); i++) {
+      int start = bracketedList.get(i).getStart();
+      int end = bracketedList.get(i).getEnd();
+
+      if (pos >= start && pos <= end) {
+        isInside = true;
+        break;
+      }
+
+      if (start > pos) {
+        break;
+      }
+    }
+    return isInside;
+  }
+
+  /**
+   * Static Function that returns the list of bracketed sentences, such as, (some text), ..
+   * @param docText
+   * @return
+   * @throws Exception
+   */
+  public static ArrayList<Brackets> findBrackatedExpression(String docText) throws Exception {
+
+    Pattern pattern = Pattern.compile("[(].*?[)]");
+    Matcher matcher = pattern.matcher(docText);
+    ArrayList<Brackets> bracketList = new ArrayList<Brackets>();
+
+    while (matcher.find()) {
+      String matched = matcher.group();
+      int start = matcher.start();
+      int end = matcher.end();
+      Brackets brackets = new Brackets(matched, start, end);
+      bracketList.add(brackets);
+    }
+    return bracketList;
+
+  }
+
 }

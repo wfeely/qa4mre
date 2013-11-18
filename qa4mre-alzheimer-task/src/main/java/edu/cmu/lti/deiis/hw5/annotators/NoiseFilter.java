@@ -19,134 +19,144 @@ import edu.stanford.nlp.util.StringUtils;
 
 public class NoiseFilter extends JCasAnnotator_ImplBase {
 
-	double QUALITY_THRESHOLD=0.75;
-	int MIN_WORDS=5;
-	int MIN_LENGTH=25;
-	Pattern authorPattern=Pattern.compile("[A-Z][a-z]+[ ]+[A-Z]{1,3}[, ]");
-	Pattern yearPattern=Pattern.compile("[(][0-9]{4}[)]");
-	
-	@Override
-	public void initialize(UimaContext context)
-			throws ResourceInitializationException {
-		super.initialize(context);
-		
-		QUALITY_THRESHOLD=(Float)context.getConfigParameterValue("QUALITY_THRESHOLD");
-		MIN_WORDS=(Integer)context.getConfigParameterValue("MIN_WORDS");
-		MIN_LENGTH=(Integer)context.getConfigParameterValue("MIN_LENGTH");
-	}
-	
-	@Override
-	public void process(JCas jCas) throws AnalysisEngineProcessException {
-		System.out.println("******Entered into process of NoiseFilter");
-		TestDocument testDoc=Utils.getTestDocumentFromCAS(jCas);
-		//String id = srcDoc.getId();
-		String docText = testDoc.getText();
-		ArrayList<Sentence>sentenceList=new ArrayList<Sentence>();
-		try {
-			//String lines[] = docText.split("[\\n]");
-			FSList sentList=testDoc.getSentenceList();
-			String filteredText = "";
-			int i=0;
-			while (true) {
-				
-				i++;
-				Sentence sentence = null;
-				try {
-					sentence = (Sentence) sentList.getNthElement(i);
-				} catch (Exception e) {
-					break;
-				}
-				
-				String sentText=sentence.getText().trim();
-				//System.out.println("Processing sentence "+i+"\t"+sentText);
-				if(sentText.equals("")){
-					continue;
-				}
-				
-				double qualityScore = this.getSentQuality(sentText);
-				//System.out.println("****Quality Score: "+qualityScore+"\t"+sentText);
-				
-				if(qualityScore<QUALITY_THRESHOLD){
-					//sentence.removeFromIndexes();
-					sentence.setBFilter(true);
-					continue;
-				}
-				
-				sentence.setQualityScore(qualityScore);
-				//sentence.addToIndexes();
-				sentenceList.add(sentence);
-				filteredText+=sentText+"\n";
-				
-			}
-						
-			//System.out.println("Difference between size of (SourceDocument - FilteredDocument): "+(docText.length()-filteredText.length()));
-		
-			FSList modifiedSentList=Utils.createSentenceList(jCas, sentenceList);
-			//annotation.setId(id);
-			testDoc.setSentenceList(modifiedSentList);
-			testDoc.setFilteredText(filteredText);
-			testDoc.addToIndexes();
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+  double QUALITY_THRESHOLD = 0.75;
 
-	
-	
-	public double getSentQuality(String sent) throws Exception {
-		String words[] = sent.split("[\\W]");
+  int MIN_WORDS = 5;
 
-		if (words.length <MIN_WORDS || sent.length() < MIN_LENGTH) {
-			return 0.0;
-		}
+  int MIN_LENGTH = 25;
 
-		HashSet<String> lowQualityWord = new HashSet<String>();
-		lowQualityWord.add("Abstract");
-		lowQualityWord.add("References");
-		lowQualityWord.add("Medline");
-		lowQualityWord.add("pp.");
-		lowQualityWord.add("See also");
+  Pattern authorPattern = Pattern.compile("[A-Z][a-z]+[ ]+[A-Z]{1,3}[, ]");
 
-		int numericWords = 0;
-		int abbrWords = 0;
-		int lowQualityWords = 0;
-		int authorCount=0;
-		Matcher authorMatcher=authorPattern.matcher(sent);
-		while(authorMatcher.find()){
-			authorCount++;
-		}
-		
-		/*if(authorCount>2){
-			System.out.println("########Authors: "+authorCount+"\t"+sent);
-		}*/
-		
-		int yearCount=0;
-		Matcher yearMatcher=yearPattern.matcher(sent);
-		while(yearMatcher.find()){
-			yearCount++;
-		}
-		int totalWords = 0;
-		for (int i = 0; i < words.length; i++) {
-			if (StringUtils.isNumeric(words[i])) {
-				numericWords++;
-			}
-			if (StringUtils.isAcronym(words[i])) {
-				abbrWords++;
-			}
-			if (lowQualityWord.contains(words[i])) {
-				lowQualityWords++;
-			}
+  Pattern yearPattern = Pattern.compile("[(][0-9]{4}[)]");
 
-			totalWords++;
-		}
+  @Override
+  public void initialize(UimaContext context) throws ResourceInitializationException {
+    super.initialize(context);
 
-		double noiseScore = (numericWords + abbrWords + lowQualityWords+authorCount*1.2+yearCount)
-				/ (double) totalWords;
+    QUALITY_THRESHOLD = (Float) context.getConfigParameterValue("QUALITY_THRESHOLD");
+    MIN_WORDS = (Integer) context.getConfigParameterValue("MIN_WORDS");
+    MIN_LENGTH = (Integer) context.getConfigParameterValue("MIN_LENGTH");
+  }
 
-		double score = 1.0 - noiseScore;
-		return score;
+  @Override
+  public void process(JCas jCas) throws AnalysisEngineProcessException {
+    System.out.println("******Entered into process of NoiseFilter");
+    TestDocument testDoc = Utils.getTestDocumentFromCAS(jCas);
+    // String id = srcDoc.getId();
+    String docText = testDoc.getText();
+    ArrayList<Sentence> sentenceList = new ArrayList<Sentence>();
+    try {
+      // String lines[] = docText.split("[\\n]");
+      FSList sentList = testDoc.getSentenceList();
+      String filteredText = "";
+      int i = 0;
+      while (true) {
 
-	}
-	
+        i++;
+        Sentence sentence = null;
+        try {
+          sentence = (Sentence) sentList.getNthElement(i);
+        } catch (Exception e) {
+          break;
+        }
+
+        String sentText = sentence.getText().trim();
+        // System.out.println("Processing sentence "+i+"\t"+sentText);
+        if (sentText.equals("")) {
+          continue;
+        }
+
+        double qualityScore = this.getSentQuality(sentText);
+        System.out.println("****Quality Score: "+qualityScore+"\t"+sentText);
+
+        if (qualityScore < QUALITY_THRESHOLD) {
+          // sentence.removeFromIndexes();
+          sentence.setBFilter(true);
+          continue;
+        }
+
+        sentence.setQualityScore(qualityScore);
+        // sentence.addToIndexes();
+        sentenceList.add(sentence);
+        filteredText += sentText + "\n";
+
+      }
+
+      // System.out.println("Difference between size of (SourceDocument - FilteredDocument): "+(docText.length()-filteredText.length()));
+
+      FSList modifiedSentList = Utils.createSentenceList(jCas, sentenceList);
+      // annotation.setId(id);
+      testDoc.setSentenceList(modifiedSentList);
+      testDoc.setFilteredText(filteredText);
+      testDoc.addToIndexes();
+
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+
+  public double getSentQuality(String sent) throws Exception {
+    String words[] = sent.split("[\\W]");
+
+    if (words.length < MIN_WORDS || sent.length() < MIN_LENGTH) {
+      return 0.0;
+    }
+
+    HashSet<String> lowQualityWord = new HashSet<String>();
+    //TODO: Check whether we need Abstract and References in this ruleset
+    lowQualityWord.add("Abstract".toLowerCase());
+    lowQualityWord.add("References".toLowerCase());
+    lowQualityWord.add("Medline".toLowerCase());
+    lowQualityWord.add("pp.".toLowerCase());
+    lowQualityWord.add("See also".toLowerCase());
+    
+    // Rules added by Keerti
+    lowQualityWord.add("doi".toLowerCase());
+    lowQualityWord.add("Editor".toLowerCase());
+    lowQualityWord.add("Received".toLowerCase());
+    lowQualityWord.add("Copyright".toLowerCase());
+    lowQualityWord.add("Funding".toLowerCase());
+    lowQualityWord.add("mail".toLowerCase());
+    
+    int numericWords = 0;
+    int abbrWords = 0;
+    int lowQualityWords = 0;
+    int authorCount = 0;
+    Matcher authorMatcher = authorPattern.matcher(sent);
+    while (authorMatcher.find()) {
+      authorCount++;
+    }
+
+    /*
+     * if(authorCount>2){ System.out.println("########Authors: "+authorCount+"\t"+sent); }
+     */
+
+    int yearCount = 0;
+    Matcher yearMatcher = yearPattern.matcher(sent);
+    while (yearMatcher.find()) {
+      yearCount++;
+    }
+    int totalWords = 0;
+    for (int i = 0; i < words.length; i++) {
+      /*if (StringUtils.isNumeric(words[i])) {
+        numericWords++;
+      }
+      if (StringUtils.isAcronym(words[i])) {
+        abbrWords++;
+      }*/
+      if (lowQualityWord.contains(words[i].toLowerCase())) {
+        lowQualityWords++;
+      }
+
+      totalWords++;
+    }
+
+    double noiseScore = (numericWords + abbrWords + lowQualityWords + authorCount * 1.2 + yearCount)
+            / (double) totalWords;
+
+    double score = 1.0 - noiseScore;
+    return score;
+
+  }
+
 }

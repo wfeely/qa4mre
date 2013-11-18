@@ -45,8 +45,10 @@ public class TextSegmenter extends JCasAnnotator_ImplBase {
       ArrayList<Brackets> brackatedExpression = Utils.findBrackatedExpression(docText);
       ArrayList<Integer> posList = new ArrayList<Integer>();
       while (matcher.find()) {
+        //String matched = matcher.group();
         int start = matcher.start();
         int end = matcher.end();
+        //System.out.print(matched+":\t"+start+"\t"+end+"\t");
         // Check and see whether we can segment the line into two lines
         // Perform a set of rules
         boolean isSegment = true;
@@ -76,18 +78,20 @@ public class TextSegmenter extends JCasAnnotator_ImplBase {
         if (start + 1 < end && isSegment) {
           posList.add(start + 1);
         }
+        //System.out.println(isSegment);
       }
       // Read each Position and add a new line character. shift variable accounts for adding the new
       // line character.
       int shift = 0;
       for (int i = 0; i < posList.size(); i++) {
         int pos = posList.get(i) + shift;
+        // System.out.println();
         String segment1 = docText.substring(0, pos);
         String segment2 = docText.substring(pos);
         docText = segment1 + "\n" + segment2;
         shift++;
       }
-      System.out.println(docText);
+      //System.out.println(docText);
 
       testDoc.setText(docText);
       testDoc.addToIndexes();
