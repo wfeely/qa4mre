@@ -138,10 +138,10 @@ public class NoiseFilter extends JCasAnnotator_ImplBase {
     }
     int totalWords = 0;
     for (int i = 0; i < words.length; i++) {
-      /*if (StringUtils.isNumeric(words[i])) {
+      if (StringUtils.isNumeric(words[i])) {
         numericWords++;
       }
-      if (StringUtils.isAcronym(words[i])) {
+      /*if (StringUtils.isAcronym(words[i])) {
         abbrWords++;
       }*/
       if (lowQualityWord.contains(words[i].toLowerCase())) {
