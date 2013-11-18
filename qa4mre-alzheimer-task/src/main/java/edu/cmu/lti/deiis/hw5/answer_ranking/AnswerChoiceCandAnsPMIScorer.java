@@ -120,8 +120,8 @@ public class AnswerChoiceCandAnsPMIScorer extends JCasAnnotator_ImplBase {
 
 					}
 
-					System.out.println(choiceList.get(j).getText() + "\t"
-							+ score1 + "\t" + ((score1)));
+//					System.out.println(choiceList.get(j).getText() + "\t"
+//							+ score1 + "\t" + ((score1)));
 
 					CandidateAnswer candAnswer=null;
 					if(candSent.getCandAnswerList()==null){
@@ -189,7 +189,7 @@ public class AnswerChoiceCandAnsPMIScorer extends JCasAnnotator_ImplBase {
 				rsp = solrWrapper.getServer().query(solrParams);
 				combinedHits = rsp.getResults().getNumFound();
 			} catch (Exception e) {
-				// System.out.println(e + "\t" + query);
+				 System.out.println(e + "\t" + query);
 			}
 
 			// System.out.println(query+"\t"+combinedHits);
@@ -207,7 +207,7 @@ public class AnswerChoiceCandAnsPMIScorer extends JCasAnnotator_ImplBase {
 				rsp = solrWrapper.getServer().query(solrParams);
 				nHits1 = rsp.getResults().getNumFound();
 			} catch (Exception e) {
-				// System.out.println(e+"\t"+query);
+				 System.out.println(e+"\t"+query);
 			}
 			// System.out.println(query+"\t"+nHits1);
 
@@ -215,6 +215,7 @@ public class AnswerChoiceCandAnsPMIScorer extends JCasAnnotator_ImplBase {
 			/*
 			 * calculate p(y)  
 			 */ 
+			
 			 query = question; // System.out.println(query); 
 			 params = new HashMap<String, String>(); 
 			 params.put("q", query);
@@ -224,12 +225,15 @@ public class AnswerChoiceCandAnsPMIScorer extends JCasAnnotator_ImplBase {
 			 long nHits2 = rsp.getResults().getNumFound(); //
 			 System.out.println(query+"\t"+nHits2);
 			 
-
+      
 			/* log seems needed */
 			 score += myLog(combinedHits, nHits1, nHits2);
-			/*if (nHits1 != 0) {
+			/*
+			if (nHits1 != 0) {
 				score += (double) combinedHits / nHits1;
-			}*/
+			}
+			
+			*/
 		}
 		if (choiceNounPhrases.size() > 0) {
 			 score=score/choiceNounPhrases.size();

@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>true</primitive>
@@ -29,13 +30,13 @@
       <nameValuePair>
         <name>SOLR_SERVER_URL</name>
         <value>
-          <string>http://peace.isri.cs.cmu.edu:9080/solr/genomics-simple/</string>
+          <string>http://coimbatore.lti.cs.cmu.edu:8983/solr/</string>
         </value>
       </nameValuePair>
       <nameValuePair>
         <name>K_CANDIDATES</name>
         <value>
-          <integer>5</integer>
+          <integer>25</integer>
         </value>
       </nameValuePair>     
     </configurationParameterSettings>     

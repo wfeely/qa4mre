@@ -48,7 +48,7 @@ public class QuestionCandSentSimilarityMatcher extends JCasAnnotator_ImplBase {
 
   String schemaName;
 
-  int TOP_SEARCH_RESULTS = 10;
+  int TOP_SEARCH_RESULTS = 25;
 
   @Override
   public void initialize(UimaContext context) throws ResourceInitializationException {
