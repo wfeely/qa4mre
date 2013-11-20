@@ -101,6 +101,7 @@ public class SolrIndexer extends JCasAnnotator_ImplBase {
         for (int j = 0; j < namedEntities.size(); j++) {
           // NER ner=namedEntities.get(j);
           neList.add(namedEntities.get(j).getText());
+          System.out.println(namedEntities.get(j).getText());
           /*
            * ArrayList<Synonym>synList=Utils.fromFSListToCollection(ner.getSynonyms(),Synonym.class);
            * for(int k=0;k<synList.size();k++){ synonymList.add(synList.get(k).getText()); }
@@ -108,6 +109,17 @@ public class SolrIndexer extends JCasAnnotator_ImplBase {
         }
         indexMap.put("namedentities", neList);
         // indexMap.put("synonyms",synonymList);
+
+        // index verbphrases
+//        FSList verbPhraseList = sent.getVerbPhraseList();
+//      	ArrayList<VerbPhrase> verbPhrases = Utils.fromFSListToCollection(verbPhraseList,
+//      			VerbPhrase.class);
+//      	ArrayList<String> verbList = new ArrayList<String>();
+//      	for (int j = 0; j < verbPhrases.size(); j++) {
+//      		verbList.add(verbPhrases.get(j).getText());
+//      		System.out.println(verbPhrases.get(j).getText());
+//      	}
+//      	indexMap.put("verbphrases", verbList);
 
         FSList fsDependencies = sent.getDependencyList();
         if (fsDependencies != null) {
@@ -124,17 +136,9 @@ public class SolrIndexer extends JCasAnnotator_ImplBase {
 
           indexMap.put("dependencies", depList);
 
-          FSList verbPhraseList = sent.getVerbPhraseList();
-          if (verbPhraseList != null) {
-            ArrayList<VerbPhrase> verbPhrases = Utils.fromFSListToCollection(verbPhraseList,
-                    VerbPhrase.class);
-            ArrayList<String> verbList = new ArrayList<String>();
-            for (int j = 0; j < verbPhrases.size(); j++) {
-              verbList.add(verbPhrases.get(j).getText());
-            }
-            indexMap.put("verbphrases", verbList);
-          }
         }
+        
+
 
         SolrInputDocument solrInpDoc = this.wrapper.buildSolrDocument(indexMap);
         String docXML = this.wrapper.convertSolrDocInXML(solrInpDoc);
