@@ -73,6 +73,7 @@
     <configurationParameterSettings/>
     <flowConstraints>
       <fixedFlow>
+      	<!-- Annotation -->
         <node>TextSegmenter</node>
         <node>StanfordSentenceAnnotator</node>
         <node>NoiseFilter</node>
@@ -86,6 +87,7 @@
         <!-- <node>QASynonymAnnotator</node>-->
         <!-- <node>SolrIndexer</node>-->
         <node>SolrIndexer</node>
+
         <!-- <node>QuestionCandSentSynonymMatcher</node> -->        
         <!-- <node>QuestionCandSentDependencyMatcher</node>-->
         <node>QuestionCandSentSimilarityMatcher</node>

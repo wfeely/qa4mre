@@ -1,17 +1,20 @@
 package edu.cmu.lti.deiis.hw5.runner;
 
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.List;
 
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.cas.CAS;
+import org.apache.uima.cas.CASException;
 import org.apache.uima.collection.CollectionProcessingEngine;
 import org.apache.uima.collection.EntityProcessStatus;
 import org.apache.uima.collection.StatusCallbackListener;
 import org.apache.uima.collection.metadata.CpeDescription;
+import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.util.XMLInputSource;
+
+import edu.cmu.lti.qalab.types.DocumentScore;
 
 /**
  * Main Class that runs a Collection Processing Engine (CPE). This class reads a CPE Descriptor as a
@@ -44,11 +47,11 @@ public class SimpleRunCPE extends Thread {
    */
   public SimpleRunCPE(String args[]) throws Exception {
     mStartTime = System.currentTimeMillis();
-    if(args.length==0){
-    	args=new String[1];
-    	args[0]=new String("src/main/resources/CpeDescriptor.xml");
+    if (args.length == 0) {
+      args = new String[1];
+      args[0] = new String("src/main/resources/CpeDescriptor.xml");
     }
-    
+
     // check command line args
     if (args.length < 1) {
       printUsageMessage();
@@ -108,6 +111,8 @@ public class SimpleRunCPE extends Thread {
   class StatusCallbackListenerImpl implements StatusCallbackListener {
     int entityCount = 0;
 
+    double avgCAt1Score = 0.0;
+
     long size = 0;
 
     /**
@@ -142,19 +147,19 @@ public class SimpleRunCPE extends Thread {
      * @see org.apache.uima.collection.processing.StatusCallbackListener#collectionProcessComplete()
      */
     public void collectionProcessComplete() {
+
+      System.out.println("\n\n ------------------ RUN RESULT ------------------\n");
       long time = System.currentTimeMillis();
-      System.out.print("Completed " + entityCount + " documents");
-      if (size > 0) {
-        System.out.print("; " + size + " characters");
-      }
-      System.out.println();
+      System.out.print("Processed " + entityCount + " documents ");
       long initTime = mInitCompleteTime - mStartTime;
       long processingTime = time - mInitCompleteTime;
       long elapsedTime = initTime + processingTime;
-      System.out.println("Total Time Elapsed: " + elapsedTime + " ms ");
-      System.out.println("Initialization Time: " + initTime + " ms");
-      System.out.println("Processing Time: " + processingTime + " ms");
-
+      System.out.print("in " + elapsedTime + " ms ");
+      System.out.print("(Initialization Time: " + initTime + " ms, ");
+      System.out.print("Processing Time: " + processingTime + " ms)");
+      System.out.println("");
+      avgCAt1Score = ((double) avgCAt1Score/entityCount);
+      System.out.println("Average C@1 Score: "+avgCAt1Score);
       System.out.println("\n\n ------------------ PERFORMANCE REPORT ------------------\n");
       System.out.println(mCPE.getPerformanceReport().toString());
       // stop the JVM. Otherwise main thread will still be blocked waiting for
@@ -210,6 +215,14 @@ public class SimpleRunCPE extends Thread {
         return;
       }
       entityCount++;
+      DocumentScore docScore = null;
+      try {
+        docScore = JCasUtil.selectSingle(aCas.getJCas(), DocumentScore.class);
+      } catch (CASException e) {
+        System.err.println(e);
+      }
+
+      avgCAt1Score += docScore.getAvgCAt1Score();
       String docText = aCas.getDocumentText();
       if (docText != null) {
         size += docText.length();

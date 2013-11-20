@@ -103,13 +103,13 @@ public class AnswerChoiceCandAnsSimilarityScorer extends JCasAnnotator_ImplBase 
           }
 
           // verb match
-          for (int k = 0; k < candSentVerbs.size(); k++) {
-            for (int l = 0; l < choiceVerbs.size(); l++) {
-              if (candSentVerbs.get(k).getText().contains(choiceVerbs.get(l).getText())) {
-                nnMatch++;
-              }
-            }
-          }
+//          for (int k = 0; k < candSentVerbs.size(); k++) {
+//            for (int l = 0; l < choiceVerbs.size(); l++) {
+//              if (candSentVerbs.get(k).getText().contains(choiceVerbs.get(l).getText())) {
+//                nnMatch++;
+//              }
+//            }
+//          }
 
           System.out.println(choiceList.get(j).getText() + "\t" + nnMatch);
           CandidateAnswer candAnswer = null;

@@ -12,7 +12,7 @@ import org.apache.uima.jcas.tcas.Annotation;
 
 
 /** 
- * Updated by JCasGen Sun Nov 10 20:19:59 EST 2013
+ * Updated by JCasGen Wed Nov 20 13:00:56 EST 2013
  * XML source: /Users/Chris/Documents/Workspace/qa4mre/qa4mre-base/src/main/resources/TypeSystemDescriptor.xml
  * @generated */
 public class Synonym extends Annotation {

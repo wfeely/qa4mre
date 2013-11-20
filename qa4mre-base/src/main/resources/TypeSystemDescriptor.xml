@@ -357,7 +357,7 @@
     </typeDescription>
     <typeDescription>
       <name>edu.cmu.lti.qalab.types.QuestionAnswerSet</name>
-      <description/>
+      <description>A Set of Question and Answer List. Each document/reading list has one or more QuestionAnswerSet (usually 10).</description>
       <supertypeName>uima.tcas.Annotation</supertypeName>
       <features>
         <featureDescription>
@@ -469,6 +469,18 @@
           <description/>
           <rangeTypeName>uima.cas.FSList</rangeTypeName>
           <elementType>edu.cmu.lti.qalab.types.Synonym</elementType>
+        </featureDescription>
+      </features>
+    </typeDescription>
+  <typeDescription>
+      <name>edu.cmu.lti.qalab.types.DocumentScore</name>
+      <description>Scored Document type. This is used to compute the average c@1 score. This object is created for each document.</description>
+      <supertypeName>uima.tcas.Annotation</supertypeName>
+      <features>
+        <featureDescription>
+          <name>avgCAt1Score</name>
+          <description>Average C@1 Score. One for each document</description>
+          <rangeTypeName>uima.cas.Double</rangeTypeName>
         </featureDescription>
       </features>
     </typeDescription>

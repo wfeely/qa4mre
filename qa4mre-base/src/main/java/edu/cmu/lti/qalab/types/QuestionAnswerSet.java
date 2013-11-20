@@ -11,8 +11,8 @@ import org.apache.uima.jcas.cas.FSList;
 import org.apache.uima.jcas.tcas.Annotation;
 
 
-/** 
- * Updated by JCasGen Sun Nov 10 20:19:58 EST 2013
+/** A Set of Question and Answer List. Each document/reading list has one or more QuestionAnswerSet (usually 10).
+ * Updated by JCasGen Wed Nov 20 13:00:55 EST 2013
  * XML source: /Users/Chris/Documents/Workspace/qa4mre/qa4mre-base/src/main/resources/TypeSystemDescriptor.xml
  * @generated */
 public class QuestionAnswerSet extends Annotation {
