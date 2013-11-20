@@ -40,10 +40,14 @@
 			</configurationParameter>
 		</configurationParameters>
 		<configurationParameterSettings>
+			<!-- <nameValuePair> <name>SOLR_SERVER_URL</name> <value> <string>http://ur.lti.cs.cmu.edu:8983/solr/</string> 
+				</value> </nameValuePair> <nameValuePair> <name>SOLR_CORE</name> <value> 
+				<string>qa4mre</string> </value> </nameValuePair> <nameValuePair> <name>SCHEMA_NAME</name> 
+				<value> <string>clef-alzhemer-task</string> </value> </nameValuePair> -->
 			<nameValuePair>
 				<name>SOLR_SERVER_URL</name>
 				<value>
-					<string>http://ur.lti.cs.cmu.edu:8983/solr/</string>
+					<string>http://coimbatore.lti.cs.cmu.edu:8983/solr/</string>
 				</value>
 			</nameValuePair>
 			<nameValuePair>
@@ -58,10 +62,6 @@
 					<string>clef-alzhemer-task</string>
 				</value>
 			</nameValuePair>
-			<!-- <nameValuePair> <name>SOLR_SERVER_URL</name> <value> <string>http://coimbatore.lti.cs.cmu.edu:8983/solr/</string> 
-				</value> </nameValuePair> <nameValuePair> <name>SOLR_CORE</name> <value> 
-				<string>qa4mre</string> </value> </nameValuePair> <nameValuePair> <name>SCHEMA_NAME</name> 
-				<value> <string>example</string> </value> </nameValuePair> -->
 
 			<nameValuePair>
 				<name>TOP_SEARCH_RESULTS</name>
