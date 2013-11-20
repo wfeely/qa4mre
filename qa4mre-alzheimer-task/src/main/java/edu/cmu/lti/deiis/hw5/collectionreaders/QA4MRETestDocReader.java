@@ -34,260 +34,249 @@ import edu.cmu.lti.qalab.types.TestDocument;
 
 public class QA4MRETestDocReader extends CollectionReader_ImplBase {
 
-	File testFile[] = null;
-	int nCurrFile = 0;
-	NodeList documents = null;
+  File testFile[] = null;
 
-	int nCurrDoc = 0;
+  int nCurrFile = 0;
 
-	@Override
-	public void initialize() throws ResourceInitializationException {
-		try {
+  NodeList documents = null;
 
-			File inputDir = new File(
-					(String) getConfigParameterValue("INPUT_DIR"));
-			testFile = inputDir.listFiles(new OnlyNXML("xml"));
-			System.out.println("Total files: " + testFile.length);
-			String xmlText = this.readTestFile();
-			this.parseTestDocument(xmlText);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+  int nCurrDoc = 0;
 
-	@Override
-	public void getNext(CAS aCAS) throws IOException, CollectionException {
+  @Override
+  public void initialize() throws ResourceInitializationException {
+    try {
 
-		if (nCurrFile < testFile.length && !(nCurrDoc < documents.getLength())) {
-			nCurrDoc = 0;
-			nCurrFile++;
-			documents = null;
-			getNext(aCAS);
-		}
+      File inputDir = new File((String) getConfigParameterValue("INPUT_DIR"));
+      testFile = inputDir.listFiles(new OnlyNXML("xml"));
+      System.out.println("Total files: " + testFile.length);
+      String xmlText = this.readTestFile();
+      this.parseTestDocument(xmlText);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
 
-		JCas jcas;
-		try {
-			jcas = aCAS.getJCas();
-		} catch (CASException e) {
-			throw new CollectionException(e);
-		}
+  @Override
+  public void getNext(CAS aCAS) throws IOException, CollectionException {
 
-		if (documents == null) {
+    if (nCurrFile < testFile.length && !(nCurrDoc < documents.getLength())) {
+      nCurrDoc = 0;
+      nCurrFile++;
+      documents = null;
+      getNext(aCAS);
+    }
 
-			try {
-				String xmlText = readTestFile();
-				this.parseTestDocument(xmlText);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+    JCas jcas;
+    try {
+      jcas = aCAS.getJCas();
+    } catch (CASException e) {
+      throw new CollectionException(e);
+    }
 
-		}
+    if (documents == null) {
 
-		Element readingTestElement = (Element) documents.item(nCurrDoc);
-		NodeList testDocNodeList = readingTestElement
-				.getElementsByTagName("doc");
+      try {
+        String xmlText = readTestFile();
+        this.parseTestDocument(xmlText);
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
 
-		String docText = testDocNodeList.item(0).getTextContent().trim();
+    }
+    // Read one document at a time from the reading-test element.
+    Element readingTestElement = (Element) documents.item(nCurrDoc);
+    NodeList testDocNodeList = readingTestElement.getElementsByTagName("doc");
 
-		String testDocId = ((Element) testDocNodeList.item(0))
-				.getAttribute("d_id");
-		String fileName = testFile[nCurrFile].getName();
+    String docText = testDocNodeList.item(0).getTextContent().trim();
 
-		String docId = fileName.replace(".xmi", "") + "_" + testDocId;
+    String testDocId = ((Element) testDocNodeList.item(0)).getAttribute("d_id");
+    String fileName = testFile[nCurrFile].getName();
 
-		NodeList questionNodeList = readingTestElement
-				.getElementsByTagName("q");
+    String docId = fileName.replace(".xmi", "") + "_" + testDocId;
 
-		ArrayList<QuestionAnswerSet> questionAnswersList = new ArrayList<QuestionAnswerSet>();
+    // Get set of QuestionAnswer Lists for a document
+    NodeList questionNodeList = readingTestElement.getElementsByTagName("q");
 
-		for (int i = 0; i < questionNodeList.getLength(); i++) {
+    // Create a set of QuestionAnswerSet from the above XML Nodelist
+    ArrayList<QuestionAnswerSet> questionAnswersList = new ArrayList<QuestionAnswerSet>();
+    String questionStr = null;
+    String answerStr = null;
+    for (int i = 0; i < questionNodeList.getLength(); i++) {
 
-			Element questionEle = (Element) questionNodeList.item(i);
-			NodeList questionNode = questionEle.getElementsByTagName("q_str");
-			String questionStr = questionNode.item(0).getTextContent();
-			NodeList answerNodeList = questionEle
-					.getElementsByTagName("answer");
+      Element questionEle = (Element) questionNodeList.item(i);
+      NodeList questionNode = questionEle.getElementsByTagName("q_str");
+      questionStr = questionNode.item(0).getTextContent();
+      NodeList answerNodeList = questionEle.getElementsByTagName("answer");
 
-			Question question = new Question(jcas);
-			question.setText(questionStr);
-			ArrayList<Answer> answerCollection = new ArrayList<Answer>();
-			for (int j = 0; j < answerNodeList.getLength(); j++) {
-				Element ansEle = (Element) answerNodeList.item(j);
-				String isCorrect = ansEle.getAttribute("correct");// <answer
-																	// a_id="2"
-																	// correct="Yes">aromatase</answer>
+      Question question = new Question(jcas);
+      question.setText(questionStr);
+      ArrayList<Answer> answerCollection = new ArrayList<Answer>();
+      for (int j = 0; j < answerNodeList.getLength(); j++) {
+        Element ansEle = (Element) answerNodeList.item(j);
+        String isCorrect = ansEle.getAttribute("correct");
+        answerStr = answerNodeList.item(j).getTextContent();
+        Answer answer = new Answer(jcas);
 
-				String answer = answerNodeList.item(j).getTextContent();
-				Answer ans = new Answer(jcas);
+        if (isCorrect != null) {
+          if (isCorrect.equals("Yes")) {
+            answer.setIsCorrect(true);
+          } else {
+            answer.setIsCorrect(false);
+          }
+        } else {
+          answer.setIsCorrect(false);
+        }
+        answer.setId(String.valueOf(j));
+        answer.setText(answerStr);
+        answerCollection.add(answer);
+      }
+      FSList answerFSList = this.createAnswerFSList(jcas, answerCollection);
+      QuestionAnswerSet questionAnswers = new QuestionAnswerSet(jcas);
+      questionAnswers.setQuestion(question);
+      questionAnswers.setAnswerList(answerFSList);
+      questionAnswersList.add(questionAnswers);
+    }
+    FSList quetionAnswersFSList = this.createQuestionAnswersFSList(jcas, questionAnswersList);
 
-				if (isCorrect != null) {
-					if (isCorrect.equals("Yes")){
-						ans.setIsCorrect(true);
-					}else{
-						ans.setIsCorrect(false);
-					}
-				} else {
-					ans.setIsCorrect(false);
-				}
-				ans.setId(String.valueOf(j));
-				ans.setText(answer);
-				answerCollection.add(ans);
-			}
-			FSList answerFSList = this.createAnswerFSList(jcas,
-					answerCollection);
-			QuestionAnswerSet questionAnswers = new QuestionAnswerSet(jcas);
-			questionAnswers.setQuestion(question);
-			questionAnswers.setAnswerList(answerFSList);
+    // put document in CAS
+    jcas.setDocumentText(docText);
+    TestDocument testDoc = new TestDocument(jcas);
+    testDoc.setId(docId);
+    testDoc.setText(docText);
+    testDoc.setQaList(quetionAnswersFSList);
+    testDoc.addToIndexes();
+    // nCurrFile++;
+    nCurrDoc++;
 
-			questionAnswersList.add(questionAnswers);
-		}
-		FSList quetionAnswersFSList = this.createQuestionAnswersFSList(jcas,
-				questionAnswersList);
+  }
 
-		// put document in CAS
-		jcas.setDocumentText(docText);
-		TestDocument testDoc = new TestDocument(jcas);
-		testDoc.setId(docId);
-		testDoc.setText(docText);
-		testDoc.setQaList(quetionAnswersFSList);
+  public String readTestFile() throws Exception {
+    // open input file list iterator
+    BufferedReader bfr = null;
+    String xmlText = "";
+    try {
+      bfr = new BufferedReader(new FileReader(testFile[nCurrFile]));
+      char chars[] = new char[4096];
+      while ((bfr.read(chars)) != -1) {
+        xmlText += new String(chars).trim();
+        chars = null;
+        chars = new char[4096];
+      }
+      xmlText = xmlText.trim();
+      // System.out.println(xmlText);
+      System.out.println("Reading Input file (" + testFile[nCurrFile].getAbsolutePath() + ")");
 
-		testDoc.addToIndexes();
-		// nCurrFile++;
-		nCurrDoc++;
+    } catch (Exception e) {
+      e.printStackTrace();
+    } finally {
+      if (bfr != null) {
+        bfr.close();
+        bfr = null;
+      }
+    }
+    return xmlText;
+  }
 
-	}
+  public FSList createAnswerFSList(JCas aJCas, Collection<Answer> aCollection) {
+    if (aCollection.size() == 0) {
+      return new EmptyFSList(aJCas);
+    }
 
-	public String readTestFile() throws Exception {
-		// open input file list iterator
-		BufferedReader bfr = null;
-		String xmlText = "";
-		try {
-			bfr = new BufferedReader(new FileReader(testFile[nCurrFile]));
-			char chars[] = new char[4096];
-			while ((bfr.read(chars)) != -1) {
-				xmlText += new String(chars).trim();
-				chars = null;
-				chars = new char[4096];
-			}
-			xmlText = xmlText.trim();
-			// System.out.println(xmlText);
-			System.out
-					.println("Read: " + testFile[nCurrFile].getAbsolutePath());
+    NonEmptyFSList head = new NonEmptyFSList(aJCas);
+    NonEmptyFSList list = head;
+    Iterator<Answer> i = aCollection.iterator();
+    while (i.hasNext()) {
+      head.setHead(i.next());
+      if (i.hasNext()) {
+        head.setTail(new NonEmptyFSList(aJCas));
+        head = (NonEmptyFSList) head.getTail();
+      } else {
+        head.setTail(new EmptyFSList(aJCas));
+      }
+    }
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			if (bfr != null) {
-				bfr.close();
-				bfr = null;
-			}
-		}
-		return xmlText;
-	}
+    return list;
+  }
 
-	public FSList createAnswerFSList(JCas aJCas, Collection<Answer> aCollection) {
-		if (aCollection.size() == 0) {
-			return new EmptyFSList(aJCas);
-		}
+  public FSList createQuestionAnswersFSList(JCas aJCas, Collection<QuestionAnswerSet> aCollection) {
+    if (aCollection.size() == 0) {
+      return new EmptyFSList(aJCas);
+    }
 
-		NonEmptyFSList head = new NonEmptyFSList(aJCas);
-		NonEmptyFSList list = head;
-		Iterator<Answer> i = aCollection.iterator();
-		while (i.hasNext()) {
-			head.setHead(i.next());
-			if (i.hasNext()) {
-				head.setTail(new NonEmptyFSList(aJCas));
-				head = (NonEmptyFSList) head.getTail();
-			} else {
-				head.setTail(new EmptyFSList(aJCas));
-			}
-		}
+    NonEmptyFSList head = new NonEmptyFSList(aJCas);
+    NonEmptyFSList list = head;
+    Iterator<QuestionAnswerSet> i = aCollection.iterator();
+    while (i.hasNext()) {
+      head.setHead(i.next());
+      if (i.hasNext()) {
+        head.setTail(new NonEmptyFSList(aJCas));
+        head = (NonEmptyFSList) head.getTail();
+      } else {
+        head.setTail(new EmptyFSList(aJCas));
+      }
+    }
 
-		return list;
-	}
+    return list;
+  }
 
-	public FSList createQuestionAnswersFSList(JCas aJCas,
-			Collection<QuestionAnswerSet> aCollection) {
-		if (aCollection.size() == 0) {
-			return new EmptyFSList(aJCas);
-		}
+  public void parseTestDocument(String xmlText) throws Exception {
 
-		NonEmptyFSList head = new NonEmptyFSList(aJCas);
-		NonEmptyFSList list = head;
-		Iterator<QuestionAnswerSet> i = aCollection.iterator();
-		while (i.hasNext()) {
-			head.setHead(i.next());
-			if (i.hasNext()) {
-				head.setTail(new NonEmptyFSList(aJCas));
-				head = (NonEmptyFSList) head.getTail();
-			} else {
-				head.setTail(new EmptyFSList(aJCas));
-			}
-		}
+    DOMParser parser = new DOMParser();
+    parser.parse(new InputSource(new StringReader(xmlText)));
+    Document document = parser.getDocument();
 
-		return list;
-	}
+    NodeList topicNodeList = document.getElementsByTagName("topic");
 
-	public void parseTestDocument(String xmlText) throws Exception {
+    for (int i = 0; i < topicNodeList.getLength(); i++) {
 
-		DOMParser parser = new DOMParser();
-		parser.parse(new InputSource(new StringReader(xmlText)));
-		Document document = parser.getDocument();
+      Element topicElement = (Element) topicNodeList.item(i);
+      String topicId = topicElement.getAttribute("t_id");
+      NodeList readingTestNodeList = topicElement.getElementsByTagName("reading-test");
 
-		NodeList topicNodeList = document.getElementsByTagName("topic");
+      documents = readingTestNodeList;
+      // Element eleReading=(Element)readingTestNodeList;
+      // String rId=eleReading.getAttribute("r_id");
+    }
 
-		for (int i = 0; i < topicNodeList.getLength(); i++) {
+  }
 
-			Element topicElement = (Element) topicNodeList.item(i);
-			String topicId=topicElement.getAttribute("t_id");
-			NodeList readingTestNodeList = topicElement
-					.getElementsByTagName("reading-test");
-			
-			documents = readingTestNodeList;
-			//Element eleReading=(Element)readingTestNodeList;
-			//String rId=eleReading.getAttribute("r_id");
-		}
+  /**
+   * Closes the file and other resources initialized during the process
+   * 
+   */
 
-	}
+  @Override
+  public void close() throws IOException {
+    System.out.println("Closing QA4MRETestDocReader");
+  }
 
-	/**
-	 * Closes the file and other resources initialized during the process
-	 * 
-	 */
+  @Override
+  public Progress[] getProgress() {
+    return new Progress[] { new ProgressImpl(nCurrFile, testFile.length, Progress.ENTITIES) };
+  }
 
-	@Override
-	public void close() throws IOException {
-		System.out.println("Closing QA4MRETestDocReader");
-	}
+  @Override
+  public boolean hasNext() throws IOException, CollectionException {
+    // return nCurrFile < 10;
+    // return nCurrFile < testFile.length;
+    if (nCurrFile < testFile.length && nCurrDoc < documents.getLength()) {
+      // System.out.println("***********True: currFile " + nCurrFile
+      // + "\tcurrDoc " + nCurrDoc);
+      return true;
+    }
+    return false;
+  }
 
-	@Override
-	public Progress[] getProgress() {
-		return new Progress[] { new ProgressImpl(nCurrFile, testFile.length,
-				Progress.ENTITIES) };
-	}
+  private class OnlyNXML implements FilenameFilter {
+    String ext;
 
-	@Override
-	public boolean hasNext() throws IOException, CollectionException {
-		// return nCurrFile < 10;
-		// return nCurrFile < testFile.length;
-		if (nCurrFile < testFile.length && nCurrDoc < documents.getLength()) {
-			//System.out.println("***********True: currFile " + nCurrFile
-				//	+ "\tcurrDoc " + nCurrDoc);
-			return true;
-		}
-		return false;
-	}
+    public OnlyNXML(String ext) {
+      this.ext = "." + ext;
+    }
 
-	private class OnlyNXML implements FilenameFilter {
-		String ext;
-
-		public OnlyNXML(String ext) {
-			this.ext = "." + ext;
-		}
-
-		public boolean accept(File dir, String name) {
-			return name.endsWith(ext);
-		}
-	}
+    public boolean accept(File dir, String name) {
+      return name.endsWith(ext);
+    }
+  }
 
 }
