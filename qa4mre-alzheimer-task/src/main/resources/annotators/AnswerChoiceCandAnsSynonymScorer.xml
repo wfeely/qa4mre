@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>true</primitive>
-  <annotatorImplementationName>edu.cmu.lti.deiis.hw5.answer_selection.AnswerSelectionByKCandVoting</annotatorImplementationName>
+  <annotatorImplementationName>edu.cmu.lti.deiis.hw5.answer_ranking.AnswerChoiceCandAnsSynonymScorer</annotatorImplementationName>
   <analysisEngineMetaData>
-    <name>AnswerSelectionByKCandVotingDescriptor</name>
+    <name>AnswerChoiceCandAnsSynonymScorerDescriptor</name>
     <description/>
     <version>1.0</version>
     <vendor/>
     <configurationParameters>
       <configurationParameter>
         <name>K_CANDIDATES</name>
-        <description>top candidates</description>
+        <description>k candidates</description>
         <type>Integer</type>
         <multiValued>false</multiValued>
         <mandatory>false</mandatory>
@@ -23,11 +22,11 @@
       <nameValuePair>
         <name>K_CANDIDATES</name>
         <value>
-          <integer>25</integer>
+          <integer>5</integer>
         </value>
       </nameValuePair>     
     </configurationParameterSettings>
-     
+    
     
     <typeSystemDescription/>
     <typePriorities/>
