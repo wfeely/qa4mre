@@ -59,7 +59,18 @@ public class PhraseAnnotator extends JCasAnnotator_ImplBase {
     testDoc.setSentenceList(fsSentList);
 
   }
-
+  /**
+   * Builds a noun phrase by matching POS tags
+   * Group 5 changes: This method adds determiners, 
+   * pronouns, possessive pronouns, possessive markers, 
+   * adverbs to list of allowable NP POS tags. 
+   * Also, Nouns phrases must contain at least one noun in order to be considered
+   * @return ArrayList<NounPhrase> 
+   * @param  ArrayList<Token> and JCas
+   * @author Group5
+   * @see NounPhrase 
+   * @see Token
+  * */
   public ArrayList<NounPhrase> extractNounPhrases(ArrayList<Token> tokenList, JCas jCas) {
 
     ArrayList<NounPhrase> nounPhraseList = new ArrayList<NounPhrase>();
@@ -98,7 +109,17 @@ public class PhraseAnnotator extends JCasAnnotator_ImplBase {
 
     return nounPhraseList;
   }
-
+  /**
+   * Builds a verb phrase by matching POS tags
+   * Group 5 changes: This method adds determiners, 
+   * added verbs, models, particles, adverbs tags  
+   * Also, Verb prepositions must contain at least one verb in order to be considered
+   * @return ArrayList<NounPhrase> 
+   * @param  ArrayList<Token> and JCas
+   * @author Group5
+   * @see VerbPhrase
+   * @see Token
+  * */
   public ArrayList<VerbPhrase> extractVerbPhrases(ArrayList<Token> tokenList, JCas jCas) {
 
     ArrayList<VerbPhrase> verbPhraseList = new ArrayList<VerbPhrase>();
