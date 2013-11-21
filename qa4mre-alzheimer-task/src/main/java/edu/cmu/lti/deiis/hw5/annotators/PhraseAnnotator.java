@@ -75,6 +75,7 @@ public class PhraseAnnotator extends JCasAnnotator_ImplBase {
 
     ArrayList<NounPhrase> nounPhraseList = new ArrayList<NounPhrase>();
     String nounPhrase = "";
+    boolean head = false;
     for (int i = 0; i < tokenList.size(); i++) {
       Token token = tokenList.get(i);
       String word = token.getText();
@@ -83,7 +84,6 @@ public class PhraseAnnotator extends JCasAnnotator_ImplBase {
       // Build a noun phrase by matching POS tags
       // Group5 changes: added determiners, pronouns, possessive pronouns, possessive markers,
       // adverbs to list of allowable NP POS tags; ensured each NP contains a noun
-      boolean head = false;
       if (pos.startsWith("NN")) {
         // found a noun; mark head as true
         head = true;
@@ -103,12 +103,13 @@ public class PhraseAnnotator extends JCasAnnotator_ImplBase {
           nounPhraseList.add(nn);
           // System.out.println("Noun Phrase: "+nounPhrase);
           nounPhrase = "";
+          head = false;
         }
       }
 
     }
     nounPhrase = nounPhrase.trim();
-    if (!nounPhrase.equals("")) {
+    if (!nounPhrase.equals("") && head) {
       NounPhrase nn = new NounPhrase(jCas);
       nn.setText(nounPhrase);
       nounPhraseList.add(nn);
@@ -120,8 +121,8 @@ public class PhraseAnnotator extends JCasAnnotator_ImplBase {
    * Builds a verb phrase by matching POS tags
    * Group 5 changes: This method adds determiners, 
    * added verbs, models, particles, adverbs tags  
-   * Also, Verb prepositions must contain at least one verb in order to be considered
-   * @return ArrayList<NounPhrase> 
+   * Also, Verb phrases must contain at least one verb in order to be considered
+   * @return ArrayList<VerbPhrase> 
    * @param  ArrayList<Token> and JCas
    * @author Group5
    * @see VerbPhrase
@@ -131,6 +132,7 @@ public class PhraseAnnotator extends JCasAnnotator_ImplBase {
 
     ArrayList<VerbPhrase> verbPhraseList = new ArrayList<VerbPhrase>();
     String verbPhrase = "";
+    boolean head = false;
     for (int i = 0; i < tokenList.size(); i++) {
       Token token = tokenList.get(i);
       String word = token.getText();
@@ -139,7 +141,6 @@ public class PhraseAnnotator extends JCasAnnotator_ImplBase {
       // Build a verb phrase by matching POS tags
       // Group5 changes: added verbs, modals, particles, adverbs; ensured each VP contains at least
       // one verb
-      boolean head = false;
       if (pos.startsWith("VB")) {
         // found a verb; mark head as true
         head = true;
@@ -157,12 +158,13 @@ public class PhraseAnnotator extends JCasAnnotator_ImplBase {
           verbPhraseList.add(vv);
           // System.out.println("VerbPhrase: "+verbPhrase);
           verbPhrase = "";
+          head = false;
         }
       }
 
     }
     verbPhrase = verbPhrase.trim();
-    if (!verbPhrase.equals("")) {
+    if (!verbPhrase.equals("") && head) {
       VerbPhrase vv = new VerbPhrase(jCas);
       vv.setText(verbPhrase);
       verbPhraseList.add(vv);
