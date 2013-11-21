@@ -143,4 +143,5 @@ public class AnswerChoiceCandAnsSimilarityScorer extends JCasAnnotator_ImplBase 
     testDoc.setQaList(fsQASet);
 
   }
+
 }
