@@ -111,15 +111,15 @@ public class SolrIndexer extends JCasAnnotator_ImplBase {
         // indexMap.put("synonyms",synonymList);
 
         // index verbphrases
-//        FSList verbPhraseList = sent.getVerbPhraseList();
-//      	ArrayList<VerbPhrase> verbPhrases = Utils.fromFSListToCollection(verbPhraseList,
-//      			VerbPhrase.class);
-//      	ArrayList<String> verbList = new ArrayList<String>();
-//      	for (int j = 0; j < verbPhrases.size(); j++) {
-//      		verbList.add(verbPhrases.get(j).getText());
+        FSList verbPhraseList = sent.getVerbPhraseList();
+      	ArrayList<VerbPhrase> verbPhrases = Utils.fromFSListToCollection(verbPhraseList,
+      			VerbPhrase.class);
+      	ArrayList<String> verbList = new ArrayList<String>();
+      	for (int j = 0; j < verbPhrases.size(); j++) {
+      		verbList.add(verbPhrases.get(j).getText());
 //      		System.out.println(verbPhrases.get(j).getText());
-//      	}
-//      	indexMap.put("verbphrases", verbList);
+      	}
+      	indexMap.put("verbphrases", verbList);
 
         FSList fsDependencies = sent.getDependencyList();
         if (fsDependencies != null) {

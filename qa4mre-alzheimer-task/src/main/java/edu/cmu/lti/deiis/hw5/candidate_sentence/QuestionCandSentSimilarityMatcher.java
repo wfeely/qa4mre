@@ -151,11 +151,11 @@ public class QuestionCandSentSimilarityMatcher extends JCasAnnotator_ImplBase {
       solrQuery += "nounphrases:\"" + nounPhrases.get(i).getText() + "\" ";
     }
     
-//    ArrayList<VerbPhrase> verbPhrases = Utils.fromFSListToCollection(question.getVerbPhraseList(), VerbPhrase.class);
-//    
-//    for (int i = 0; i < verbPhrases.size(); i++) {
-//      solrQuery += "verbphrases:\"" + verbPhrases.get(i).getText() + "\" ";
-//    }
+    ArrayList<VerbPhrase> verbPhrases = Utils.fromFSListToCollection(question.getVerbPhraseList(), VerbPhrase.class);
+    
+    for (int i = 0; i < verbPhrases.size(); i++) {
+      solrQuery += "verbphrases:\"" + verbPhrases.get(i).getText() + "\" ";
+    }
 
     ArrayList<NER> neList = Utils.fromFSListToCollection(question.getNerList(), NER.class);
     for (int i = 0; i < neList.size(); i++) {
