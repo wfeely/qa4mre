@@ -73,20 +73,21 @@ public class AnswerChoiceCandAnsSimilarityScorer extends JCasAnnotator_ImplBase 
 					ArrayList<NER> choiceNERs = Utils.fromFSListToCollection(
 							answer.getNerList(), NER.class);
 
-					int nnMatch = 0;
+//					int nnMatch = 0;
+					double softMatch = 0;
 					for (int k = 0; k < candSentNouns.size(); k++) {
 					  /*  noun phrases from candidate contain NEs from choices */
 						for (int l = 0; l < choiceNERs.size(); l++) {
 							if (candSentNouns.get(k).getText()
 									.contains(choiceNERs.get(l).getText())) {
-								nnMatch++;
+								softMatch += candSent.getRelevanceScore();
 							}
 						}
 						/*  noun phrases from candidate contain noun phrases from choices */
 						for (int l = 0; l < choiceNouns.size(); l++) {
 							if (candSentNouns.get(k).getText()
 									.contains(choiceNouns.get(l).getText())) {
-								nnMatch++;
+								softMatch += candSent.getRelevanceScore();
 							}
 						}
 					}
@@ -96,21 +97,21 @@ public class AnswerChoiceCandAnsSimilarityScorer extends JCasAnnotator_ImplBase 
 						for (int l = 0; l < choiceNERs.size(); l++) {
 							if (candSentNers.get(k).getText()
 									.contains(choiceNERs.get(l).getText())) {
-								nnMatch++;
+								softMatch += candSent.getRelevanceScore();
 							}
 						}
 						/*  NEs from candidate contain NEs from choices */
 						for (int l = 0; l < choiceNouns.size(); l++) {
 							if (candSentNers.get(k).getText()
 									.contains(choiceNouns.get(l).getText())) {
-								nnMatch++;
+								softMatch += candSent.getRelevanceScore();
 							}
 						}
 
 					}
 
 					System.out.println(choiceList.get(j).getText() + "\t"
-							+ nnMatch);
+							+ softMatch);
 					CandidateAnswer candAnswer = null;
 					if (candSent.getCandAnswerList() == null) {
 						candAnswer = new CandidateAnswer(aJCas);
@@ -124,7 +125,7 @@ public class AnswerChoiceCandAnsSimilarityScorer extends JCasAnnotator_ImplBase 
 					candAnswer.setText(answer.getText());
 					candAnswer.setQId(answer.getQuestionId());
 					candAnswer.setChoiceIndex(j);
-					candAnswer.setSimilarityScore(nnMatch);
+					candAnswer.setSimilarityScore(softMatch);
 					candAnsList.add(candAnswer);
 				}
 
