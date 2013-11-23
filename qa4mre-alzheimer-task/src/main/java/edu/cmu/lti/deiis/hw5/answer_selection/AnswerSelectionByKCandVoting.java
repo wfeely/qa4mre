@@ -13,7 +13,6 @@ import org.apache.uima.resource.ResourceInitializationException;
 import edu.cmu.lti.qalab.types.Answer;
 import edu.cmu.lti.qalab.types.CandidateAnswer;
 import edu.cmu.lti.qalab.types.CandidateSentence;
-import edu.cmu.lti.qalab.types.DocumentScore;
 import edu.cmu.lti.qalab.types.Question;
 import edu.cmu.lti.qalab.types.QuestionAnswerSet;
 import edu.cmu.lti.qalab.types.TestDocument;
@@ -22,6 +21,8 @@ import edu.cmu.lti.qalab.utils.Utils;
 public class AnswerSelectionByKCandVoting extends JCasAnnotator_ImplBase {
 
   int K_CANDIDATES = 5;
+  public double avgCAt1 =0.0;
+  public int nDoc = 0;
 
   @Override
 	public void initialize(UimaContext context)
@@ -118,11 +119,9 @@ public class AnswerSelectionByKCandVoting extends JCasAnnotator_ImplBase {
     // SimpleRunCPE
     double cAt1 = (((double) matched) / ((double) total) * unanswered + (double) matched)
             * (1.0 / total);
-    //Create and Add QuestionAnswerScore types
-    DocumentScore documentScore = new DocumentScore(aJCas);
-    documentScore.setAvgCAt1Score(cAt1);
-    documentScore.addToIndexes();
     System.out.println("c@1 score:" + cAt1);
+    avgCAt1 = avgCAt1 +cAt1;
+    nDoc ++;
 
   }
 
@@ -145,5 +144,14 @@ public class AnswerSelectionByKCandVoting extends JCasAnnotator_ImplBase {
 
     return bestAns;
   }
+
+  @Override
+  public void collectionProcessComplete() throws AnalysisEngineProcessException {
+    super.collectionProcessComplete();
+    System.out.println("\n\n ------------------ RUN RESULT ------------------\n");
+    System.out.println("Average C@1: "+((double)avgCAt1/nDoc));
+  }
+  
+  
 
 }
