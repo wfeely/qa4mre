@@ -215,24 +215,24 @@ public class AnswerChoiceCandAnsPMIScorer extends JCasAnnotator_ImplBase {
 			/*
 			 * calculate p(y)  
 			 */ 
-			 query = question; // System.out.println(query); 
-			 params = new HashMap<String, String>(); 
-			 params.put("q", query);
-			 params.put("rows", "1"); 
-			 solrParams = new MapSolrParams(params);
-			 rsp = solrWrapper.getServer().query(solrParams); 
-			 long nHits2 = rsp.getResults().getNumFound(); //
-			 System.out.println(query+"\t"+nHits2);
+//			 query = question; // System.out.println(query); 
+//			 params = new HashMap<String, String>(); 
+//			 params.put("q", query);
+//			 params.put("rows", "1"); 
+//			 solrParams = new MapSolrParams(params);
+//			 rsp = solrWrapper.getServer().query(solrParams); 
+//			 long nHits2 = rsp.getResults().getNumFound(); //
+//			 System.out.println(query+"\t"+nHits2);
 			 
 
 			/* log seems needed */
-			 score += myLog(combinedHits, nHits1, nHits2);
-			/*if (nHits1 != 0) {
+//			 score += myLog(combinedHits, nHits1, nHits2);
+			if (nHits1 != 0) {
 				score += (double) combinedHits / nHits1;
-			}*/
+			}
 		}
 		if (choiceNounPhrases.size() > 0) {
-			 score=score/choiceNounPhrases.size();
+//			 score=score/choiceNounPhrases.size();
 		}
 		return score;
 	}

@@ -15,6 +15,8 @@ import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.util.XMLInputSource;
 
 import edu.cmu.lti.qalab.types.DocumentScore;
+import edu.cmu.lti.qalab.types.TestDocument;
+import edu.cmu.lti.qalab.utils.Utils;
 
 /**
  * Main Class that runs a Collection Processing Engine (CPE). This class reads a CPE Descriptor as a
@@ -110,9 +112,6 @@ public class SimpleRunCPE extends Thread {
    */
   class StatusCallbackListenerImpl implements StatusCallbackListener {
     int entityCount = 0;
-
-    double avgCAt1Score = 0.0;
-
     long size = 0;
 
     /**
@@ -147,8 +146,6 @@ public class SimpleRunCPE extends Thread {
      * @see org.apache.uima.collection.processing.StatusCallbackListener#collectionProcessComplete()
      */
     public void collectionProcessComplete() {
-
-      System.out.println("\n\n ------------------ RUN RESULT ------------------\n");
       long time = System.currentTimeMillis();
       System.out.print("Processed " + entityCount + " documents ");
       long initTime = mInitCompleteTime - mStartTime;
@@ -158,8 +155,6 @@ public class SimpleRunCPE extends Thread {
       System.out.print("(Initialization Time: " + initTime + " ms, ");
       System.out.print("Processing Time: " + processingTime + " ms)");
       System.out.println("");
-      avgCAt1Score = ((double) avgCAt1Score/entityCount);
-      System.out.println("Average C@1 Score: "+avgCAt1Score);
       System.out.println("\n\n ------------------ PERFORMANCE REPORT ------------------\n");
       System.out.println(mCPE.getPerformanceReport().toString());
       // stop the JVM. Otherwise main thread will still be blocked waiting for
@@ -215,14 +210,6 @@ public class SimpleRunCPE extends Thread {
         return;
       }
       entityCount++;
-      DocumentScore docScore = null;
-      try {
-        docScore = JCasUtil.selectSingle(aCas.getJCas(), DocumentScore.class);
-      } catch (CASException e) {
-        System.err.println(e);
-      }
-
-      avgCAt1Score += docScore.getAvgCAt1Score();
       String docText = aCas.getDocumentText();
       if (docText != null) {
         size += docText.length();
