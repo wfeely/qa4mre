@@ -128,6 +128,7 @@ public class QuestionCandSentSynonymMatcher extends JCasAnnotator_ImplBase {
 
 		for (int i = 0; i < nounPhrases.size(); i++) {
 			NounPhrase np = nounPhrases.get(i);
+			System.out.println(np.getSynonyms());
 			ArrayList<Synonym> synList = Utils.fromFSListToCollection(
 					np.getSynonyms(), Synonym.class);
 			for (int j = 0; j < synList.size(); j++) {

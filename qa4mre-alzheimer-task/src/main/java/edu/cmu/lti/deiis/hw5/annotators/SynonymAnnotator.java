@@ -62,6 +62,7 @@ public class SynonymAnnotator extends JCasAnnotator_ImplBase {
 			for (int j = 0; j < phraseList.size(); j++) {
 				NounPhrase phrase = phraseList.get(j);
 				LinkedList<String>synPhrases=getSynonym(phrase.getText());
+				synPhrases.add(phrase.getText());//add phrase itself
 				ArrayList<Synonym>synList=new ArrayList<Synonym>();
 				for(int k=0;k<synPhrases.size();k++){
 					String syn=synPhrases.get(k);
@@ -70,7 +71,8 @@ public class SynonymAnnotator extends JCasAnnotator_ImplBase {
 					synonym.setWeight(1.0);
 					synonym.setSource("gigaword-pubmed");
 					synonym.addToIndexes();
-					synList.add(synonym);					
+					synList.add(synonym);	
+					System.out.println("syn:" + syn);
 				}
 				FSList fsSynList=Utils.fromCollectionToFSList(jCas, synList);
 				phrase.setSynonyms(fsSynList);
@@ -80,6 +82,7 @@ public class SynonymAnnotator extends JCasAnnotator_ImplBase {
 			for (int j = 0; j < nerList.size(); j++) {
 				NER ner = nerList.get(j);
 				LinkedList<String>synNers=getSynonym(ner.getText());
+				synNers.add(ner.getText());//add ner itself
 				ArrayList<Synonym>synList=new ArrayList<Synonym>();
 				for(int k=0;k<synNers.size();k++){
 					String syn=synNers.get(k);
@@ -89,6 +92,8 @@ public class SynonymAnnotator extends JCasAnnotator_ImplBase {
 					synonym.setSource("gigaword-pubmed");
 					synonym.addToIndexes();
 					synList.add(synonym);
+					System.out.println("syn:" + syn);
+
 				}
 				FSList fsSynList=Utils.fromCollectionToFSList(jCas, synList);
 				ner.setSynonyms(fsSynList);

@@ -70,6 +70,7 @@ public class QASynonymAnnotator extends JCasAnnotator_ImplBase {
 				
 				NounPhrase phrase = qPhraseList.get(j);
 				LinkedList<String>synPhrases=getSynonym(phrase.getText());
+				synPhrases.add(phrase.getText()); //add phrase itself
 				ArrayList<Synonym>synList=new ArrayList<Synonym>();
 				for(int k=0;k<synPhrases.size();k++){
 					String syn=synPhrases.get(k);
@@ -88,6 +89,7 @@ public class QASynonymAnnotator extends JCasAnnotator_ImplBase {
 			for(int j=0;j<qNerList.size();j++){
 				NER ner = qNerList.get(j);
 				LinkedList<String>synNers=getSynonym(ner.getText());
+				synNers.add(ner.getText());
 				ArrayList<Synonym>synList=new ArrayList<Synonym>();
 				for(int k=0;k<synNers.size();k++){
 					String syn=synNers.get(k);
@@ -124,6 +126,7 @@ public class QASynonymAnnotator extends JCasAnnotator_ImplBase {
 					
 					NounPhrase phrase = aPhraseList.get(j);
 					LinkedList<String>synPhrases=getSynonym(phrase.getText());
+					synPhrases.add(phrase.getText());
 					ArrayList<Synonym>synList=new ArrayList<Synonym>();
 					for(int k=0;k<synPhrases.size();k++){
 						String syn=synPhrases.get(k);
@@ -142,6 +145,7 @@ public class QASynonymAnnotator extends JCasAnnotator_ImplBase {
 				for(int j=0;j<aNerList.size();j++){
 					NER ner = aNerList.get(j);
 					LinkedList<String>synNers=getSynonym(ner.getText());
+					synNers.add(ner.getText());
 					ArrayList<Synonym>synList=new ArrayList<Synonym>();
 					for(int k=0;k<synNers.size();k++){
 						String syn=synNers.get(k);

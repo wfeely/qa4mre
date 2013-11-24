@@ -67,8 +67,8 @@ public class SolrIndexer extends JCasAnnotator_ImplBase {
 					testDoc.getSentenceList(), Sentence.class);
 
 			
-			ArrayList<String>synonymList=new ArrayList<String>();
 			for (int i = 0; i < sentenceList.size(); i++) {
+				ArrayList<String>synonymList=new ArrayList<String>();
 				Sentence sent = sentenceList.get(i);
 				String sentText = sent.getText();
 				String sentId = id + "_" + i;
@@ -104,8 +104,9 @@ public class SolrIndexer extends JCasAnnotator_ImplBase {
 						synonymList.add(synList.get(k).getText());
 					}
 				}
+				System.out.println("syn list" + synonymList);
 				indexMap.put("namedentities", neList);
-				//indexMap.put("synonyms",synonymList);
+				indexMap.put("synonyms",synonymList);
 
 				FSList fsDependencies = sent.getDependencyList();
 				if (fsDependencies != null) {
