@@ -104,7 +104,7 @@ public class AnswerChoiceCandAnsSynonymScorer extends JCasAnnotator_ImplBase {
 					System.out.println(choiceList.get(j).getText() + "\t"
 							+ nnMatch);
 					CandidateAnswer candAnswer = null;
-					if (candSent.getCandAnswerList() == null) {
+					if (candSent.getCandAnswerList() != null) {
 						candAnswer = Utils.fromFSListToCollection(
 								candSent.getCandAnswerList(),
 								CandidateAnswer.class).get(j);//
