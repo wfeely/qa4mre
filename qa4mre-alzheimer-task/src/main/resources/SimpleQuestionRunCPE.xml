@@ -48,7 +48,7 @@
         <!-- <node>AnswerChoiceCandAnsSynonymScorer</node>-->
         <!--<node>AnswerChoiceCandAnsPMIScorer</node>-->
         <node>AnswerChoiceCandAnsPMIScorer</node>
-      <node>AnswerChoiceCandAnsSynonymScorer</node>
+      <!-- <node>AnswerChoiceCandAnsSynonymScorer</node> -->
       <node>AnswerSelectionByKCandVoting</node>
       </fixedFlow>
     </flowConstraints>

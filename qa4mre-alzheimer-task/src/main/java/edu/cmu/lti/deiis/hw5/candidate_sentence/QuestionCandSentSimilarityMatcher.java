@@ -102,7 +102,32 @@ public class QuestionCandSentSimilarityMatcher extends JCasAnnotator_ImplBase {
           }
           String sentIdx = sentId.replace(docId, "").replace("_", "").trim();
           int idx = Integer.parseInt(sentIdx);
+          
+          Sentence preSentence = null;
+          Sentence curSentence = null;
+          Sentence nextSentence = null;
+          
+          try{
+            preSentence = sentenceList.get(idx-1);
+            
+          } catch(Exception e){
+            continue;
+          }
+          curSentence = sentenceList.get(idx);
+          try{
+            preSentence = sentenceList.get(idx+1);
+            
+          } catch(Exception e){
+            continue;
+          }
+          String annSent=curSentence.getCoveredText();
+          if (preSentence!=null)
+            annSent = preSentence.getCoveredText().concat(annSent);
+          if (nextSentence!=null)
+            annSent = annSent.concat(nextSentence.getCoveredText());
+          
           Sentence annSentence = sentenceList.get(idx);
+          annSentence.setText(annSent);
 
           String sentence = doc.get("text").toString();
           // the score is already computed by solr!
