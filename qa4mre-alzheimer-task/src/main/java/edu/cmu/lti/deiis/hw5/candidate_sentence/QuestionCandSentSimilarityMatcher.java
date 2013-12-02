@@ -43,7 +43,7 @@ public class QuestionCandSentSimilarityMatcher extends JCasAnnotator_ImplBase {
   // IndexSchema indexSchema;
   String coreName;
 
-  boolean addSentWindow = true;
+  boolean addSentWindow = false;
 
   String schemaName;
 
