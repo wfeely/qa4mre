@@ -43,7 +43,7 @@ public class QuestionCandSentSimilarityMatcher extends JCasAnnotator_ImplBase {
   // IndexSchema indexSchema;
   String coreName;
 
-  boolean addSentWindow = false;
+  boolean addSentWindow = true;
 
   String schemaName;
 
@@ -102,7 +102,6 @@ public class QuestionCandSentSimilarityMatcher extends JCasAnnotator_ImplBase {
           String sentIdx = sentId.replace(docId, "").replace("_", "").trim();
           int idx = Integer.parseInt(sentIdx);
           Sentence annSentence = sentenceList.get(idx);
-
           // Sentence Window feature of size 3
           if (addSentWindow) {
             Sentence currentSentence = null;
@@ -117,7 +116,7 @@ public class QuestionCandSentSimilarityMatcher extends JCasAnnotator_ImplBase {
             // Retrieve current sentence
             currentSentence = sentenceList.get(idx);
             // Retrieve previous sentence
-            if ((idx + 1) <= sentenceList.size()) {
+            if ((idx + 1) < sentenceList.size()) {
               nextAnnSentence = sentenceList.get(idx + 1);
             }
             // Combine the Sentence Window
