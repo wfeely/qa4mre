@@ -21,6 +21,7 @@ import edu.cmu.lti.qalab.types.NounPhrase;
 import edu.cmu.lti.qalab.types.Sentence;
 import edu.cmu.lti.qalab.types.Synonym;
 import edu.cmu.lti.qalab.types.TestDocument;
+import edu.cmu.lti.qalab.types.VerbPhrase;
 import edu.cmu.lti.qalab.utils.Utils;
 
 public class SolrIndexer extends JCasAnnotator_ImplBase {
@@ -67,8 +68,8 @@ public class SolrIndexer extends JCasAnnotator_ImplBase {
 					testDoc.getSentenceList(), Sentence.class);
 
 			
-			//ArrayList<String>synonymList=new ArrayList<String>();
 			for (int i = 0; i < sentenceList.size(); i++) {
+				ArrayList<String>synonymList=new ArrayList<String>();
 				Sentence sent = sentenceList.get(i);
 				String sentText = sent.getText();
 				String sentId = id + "_" + i;
@@ -84,10 +85,10 @@ public class SolrIndexer extends JCasAnnotator_ImplBase {
 				for (int j = 0; j < nounPhrases.size(); j++) {
 					//NounPhrase nnPhr=nounPhrases.get(j);
 					nnList.add(nounPhrases.get(j).getText());
-					/*ArrayList<Synonym>synList=Utils.fromFSListToCollection(nnPhr.getSynonyms(),Synonym.class);
+					ArrayList<Synonym>synList=Utils.fromFSListToCollection(nounPhrases.get(j).getSynonyms(),Synonym.class);
 					for(int k=0;k<synList.size();k++){
 						synonymList.add(synList.get(k).getText());
-					}*/
+					}
 				}
 
 				indexMap.put("nounphrases", nnList);
@@ -99,13 +100,25 @@ public class SolrIndexer extends JCasAnnotator_ImplBase {
 				for (int j = 0; j < namedEntities.size(); j++) {
 					//NER ner=namedEntities.get(j);
 					neList.add(namedEntities.get(j).getText());
-					/*ArrayList<Synonym>synList=Utils.fromFSListToCollection(ner.getSynonyms(),Synonym.class);
+					ArrayList<Synonym>synList=Utils.fromFSListToCollection(namedEntities.get(j).getSynonyms(),Synonym.class);
 					for(int k=0;k<synList.size();k++){
 						synonymList.add(synList.get(k).getText());
-					}*/
+					}
 				}
+				System.out.println("syn list" + synonymList);
 				indexMap.put("namedentities", neList);
-				//indexMap.put("synonyms",synonymList);
+				indexMap.put("synonyms",synonymList);
+				
+				// index verbphrases
+		        FSList verbPhraseList = sent.getVerbPhraseList();
+		      	ArrayList<VerbPhrase> verbPhrases = Utils.fromFSListToCollection(verbPhraseList,
+		      			VerbPhrase.class);
+		      	ArrayList<String> verbList = new ArrayList<String>();
+		      	for (int j = 0; j < verbPhrases.size(); j++) {
+		      		verbList.add(verbPhrases.get(j).getText());
+//		      		System.out.println(verbPhrases.get(j).getText());
+		      	}
+		      	indexMap.put("verbphrases", verbList);
 
 				FSList fsDependencies = sent.getDependencyList();
 				if (fsDependencies != null) {

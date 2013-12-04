@@ -27,6 +27,12 @@
     <delegateAnalysisEngine key="AnswerChoiceCandAnsSimilarityScorer">
       <import location="annotators/AnswerChoiceCandAnsSimilarityScorer.xml"/>
     </delegateAnalysisEngine>
+  <delegateAnalysisEngine key="QuestionCandSentSynonymMatcher">
+      <import name="annotators.QuestionCandSentSynonymMatcher"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="AnswerChoiceCandAnsSynonymScorer">
+      <import name="annotators.AnswerChoiceCandAnsSynonymScorer"/>
+    </delegateAnalysisEngine>
   </delegateAnalysisEngineSpecifiers>
   <analysisEngineMetaData>
     <name>CpeQuestionDescriptor</name>
@@ -37,10 +43,10 @@
     <configurationParameterSettings/>
     <flowConstraints>
       <fixedFlow>
-        <node>QuestionCandSentSimilarityMatcher</node>
+        <node>QuestionCandSentSynonymMatcher</node>
         <!-- <node>QuestionCandSentSynonymMatcher</node>-->
         <!-- <node>QuestionCandSentDependencyMatcher</node>-->
-        <node>AnswerChoiceCandAnsSimilarityScorer</node>
+        <node>AnswerChoiceCandAnsSynonymScorer</node>
         <!-- <node>AnswerChoiceCandAnsSynonymScorer</node>-->
         <!--<node>AnswerChoiceCandAnsPMIScorer</node>-->
         <node>AnswerChoiceCandAnsPMIScorer</node>

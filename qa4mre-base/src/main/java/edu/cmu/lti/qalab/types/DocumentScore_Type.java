@@ -14,7 +14,7 @@ import org.apache.uima.cas.Feature;
 import org.apache.uima.jcas.tcas.Annotation_Type;
 
 /** Scored Document type. This is used to compute the average c@1 score. This object is created for each document.
- * Updated by JCasGen Mon Nov 11 01:09:33 EST 2013
+ * Updated by JCasGen Wed Nov 20 13:00:55 EST 2013
  * @generated */
 public class DocumentScore_Type extends Annotation_Type {
   /** @generated */
