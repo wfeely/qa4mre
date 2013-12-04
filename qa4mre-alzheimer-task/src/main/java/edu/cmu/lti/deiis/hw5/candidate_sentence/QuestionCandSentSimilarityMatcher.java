@@ -102,8 +102,10 @@ public class QuestionCandSentSimilarityMatcher extends JCasAnnotator_ImplBase {
           }
           String sentIdx = sentId.replace(docId, "").replace("_", "").trim();
           int idx = Integer.parseInt(sentIdx);
-          Sentence annSentence = sentenceList.get(idx);
 
+          
+          Sentence annSentence = sentenceList.get(idx);
+          
           String sentence = doc.get("text").toString();
           // the score is already computed by solr!
           // so we are not going to refine this part, i.e. similarity matching
