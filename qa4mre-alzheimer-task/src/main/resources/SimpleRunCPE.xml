@@ -111,10 +111,12 @@
         <!-- <node>QuestionCandSentDependencyMatcher</node>-->
         <node>SolrIndexer</node>
         <!--<node>AnswerChoiceCandAnsSynonymScorer</node>-->
+
         <!--<node>AnswerChoiceCandAnsPMIScorer</node>-->       
         <node>QuestionCandSentSynonymMatcher</node>
-        <node>AnswerChoiceCandAnsSynonymScorer</node>
+        <!-- <node>AnswerChoiceCandAnsSynonymScorer</node>  -->
         <node>AnswerChoiceCandAnsPMIScorer</node>
+
         <node>AnswerSelectionByKCandVoting</node>
         <!--<node>AnswerSelectionByKCandVoting</node>-->
       </fixedFlow>

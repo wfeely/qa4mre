@@ -38,13 +38,12 @@ public class QuestionCandSentSimilarityMatcher extends JCasAnnotator_ImplBase {
 
   SolrWrapper solrWrapper = null;
 
-
   String serverUrl;
-
-
 
   // IndexSchema indexSchema;
   String coreName;
+
+  boolean addSentWindow = true;
 
   String schemaName;
 
@@ -103,33 +102,57 @@ public class QuestionCandSentSimilarityMatcher extends JCasAnnotator_ImplBase {
           String sentIdx = sentId.replace(docId, "").replace("_", "").trim();
           int idx = Integer.parseInt(sentIdx);
           
-          Sentence preSentence = null;
-          Sentence curSentence = null;
-          Sentence nextSentence = null;
-          
-          try{
-            preSentence = sentenceList.get(idx-1);
-            
-          } catch(Exception e){
-            continue;
-          }
-          curSentence = sentenceList.get(idx);
-          try{
-            preSentence = sentenceList.get(idx+1);
-            
-          } catch(Exception e){
-            continue;
-          }
-          String annSent=curSentence.getCoveredText();
-          if (preSentence!=null)
-            annSent = preSentence.getCoveredText().concat(annSent);
-          if (nextSentence!=null)
-            annSent = annSent.concat(nextSentence.getCoveredText());
-          
           Sentence annSentence = sentenceList.get(idx);
-          annSentence.setText(annSent);
+          // Sentence Window feature of size 3
+          if (addSentWindow) {
+            Sentence currentSentence = null;
+            Sentence prevAnnSentence = null;
+            Sentence nextAnnSentence = null;
+            // Modify the annotation sentence
+            annSentence = null;
+            // Retrieve previous sentence
+            if ((idx - 1) >= 0) {
+              prevAnnSentence = sentenceList.get(idx - 1);
+            }
+            // Retrieve current sentence
+            currentSentence = sentenceList.get(idx);
+            // Retrieve previous sentence
+            if ((idx + 1) < sentenceList.size()) {
+              nextAnnSentence = sentenceList.get(idx + 1);
+            }
+            // Combine the Sentence Window
+            annSentence = (Sentence) currentSentence.clone();
+            String text = annSentence.getText();
+            FSList nounList = annSentence.getPhraseList();
+            FSList nerList = annSentence.getPhraseList();
+            ArrayList<NounPhrase> nounArrayList = Utils.fromFSListToCollection(nounList,
+                    NounPhrase.class);
+            ArrayList<NER> nerArrayList = Utils.fromFSListToCollection(nerList, NER.class);
+            if (prevAnnSentence != null) {
+              text += prevAnnSentence.getText();
+              nounArrayList.addAll(Utils.fromFSListToCollection(prevAnnSentence.getPhraseList(),
+                      NounPhrase.class));
+              nerArrayList.addAll(Utils.fromFSListToCollection(prevAnnSentence.getNerList(),
+                      NER.class));
+            }
+            if (nextAnnSentence != null) {
+              text += nextAnnSentence.getText();
+              nounArrayList.addAll(Utils.fromFSListToCollection(nextAnnSentence.getPhraseList(),
+                      NounPhrase.class));
+              nerArrayList.addAll(Utils.fromFSListToCollection(nextAnnSentence.getNerList(),
+                      NER.class));
+            }
+            // Sentence Window of size 3
+            annSentence.setText(text);
+            annSentence.setPhraseList(nounList);
+            annSentence.setNerList(nerList);
+            // annSentence.addToIndexes();
+          }
 
+
+          
           String sentence = doc.get("text").toString();
+
           // the score is already computed by solr!
           // so we are not going to refine this part, i.e. similarity matching
           // we may instead make effort on forming better query
@@ -141,7 +164,7 @@ public class QuestionCandSentSimilarityMatcher extends JCasAnnotator_ImplBase {
           candidateSentList.add(candSent);
           System.out.println(relScore + "\t" + sentence);
         }
-        //store candidate sentences
+        // store candidate sentences
         FSList fsCandidateSentList = Utils.fromCollectionToFSList(aJCas, candidateSentList);
         fsCandidateSentList.addToIndexes();
         // store candidate sentences in question answer set
@@ -183,6 +206,5 @@ public class QuestionCandSentSimilarityMatcher extends JCasAnnotator_ImplBase {
 
     return solrQuery;
   }
-
 
 }

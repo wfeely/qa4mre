@@ -77,23 +77,25 @@ public class AnswerSelectionByKCandVoting extends JCasAnnotator_ImplBase {
           CandidateAnswer candAns = candAnswerList.get(j);
           String answer = candAns.getText();
 
+
           double simScore = candAns.getSimilarityScore(),
                   synScore = candAns.getSynonymScore(),
                   pmiScore = candAns.getPMIScore();
-          double totalScore = 0.039*candAns.getSimilarityScore() + candAns.getSynonymScore()
-                  + 0.0777*candAns.getPMIScore();
-//          try
-//          {
-//            String filename = "data/scores/scores_sim_syn_pmi";
-//            FileWriter fw = new FileWriter(filename, true);
-//            int match = answer.equals(correct)?1:0;
-//            fw.write(String.format("%d,%f,%f,%f\n", match, simScore, synScore, pmiScore));
-//            fw.close();
-//          } catch(IOException e){
-//            System.err.println("IOException: " + e.getMessage());
-//            System.out.println("IOException: " + e.getMessage());
-//            System.exit(0);
-//          }
+          double totalScore = candAns.getSimilarityScore() + candAns.getSynonymScore()
+                  + candAns.getPMIScore();
+          try
+          {
+            String filename = "data/scores/scores_sim_syn_pmi";
+            FileWriter fw = new FileWriter(filename, true);
+            int match = answer.equals(correct)?1:0;
+            fw.write(String.format("%d,%f,%f,%f\n", match, simScore, synScore, pmiScore));
+            fw.close();
+          } catch(IOException e){
+            System.err.println("IOException: " + e.getMessage());
+            System.out.println("IOException: " + e.getMessage());
+            System.exit(0);
+          }
+
 
           if (totalScore > maxScore) {
             maxScore = totalScore;
