@@ -17,13 +17,6 @@ import edu.cmu.lti.qalab.types.TestDocument;
 import edu.cmu.lti.qalab.utils.Utils;
 import edu.stanford.nlp.util.StringUtils;
 
-/**
- * 
- * Filters Sentences that are irrelevant for the task based on set of hard-coded rules.
- * 
- * @author kmuruges
- * 
- */
 public class NoiseFilter extends JCasAnnotator_ImplBase {
 
   double QUALITY_THRESHOLD = 0.75;
@@ -47,7 +40,7 @@ public class NoiseFilter extends JCasAnnotator_ImplBase {
 
   @Override
   public void process(JCas jCas) throws AnalysisEngineProcessException {
-    System.out.println("Denoising extracted sentences ...");
+    System.out.println("******Entered into process of NoiseFilter");
     TestDocument testDoc = Utils.getTestDocumentFromCAS(jCas);
     // String id = srcDoc.getId();
     String docText = testDoc.getText();
@@ -74,7 +67,7 @@ public class NoiseFilter extends JCasAnnotator_ImplBase {
         }
 
         double qualityScore = this.getSentQuality(sentText);
-        // System.out.println("****Quality Score: "+qualityScore+"\t"+sentText);
+        System.out.println("****Quality Score: "+qualityScore+"\t"+sentText);
 
         if (qualityScore < QUALITY_THRESHOLD) {
           // sentence.removeFromIndexes();
@@ -110,21 +103,21 @@ public class NoiseFilter extends JCasAnnotator_ImplBase {
     }
 
     HashSet<String> lowQualityWord = new HashSet<String>();
-    // TODO: Check whether we need Abstract and References in this ruleset
+    //TODO: Check whether we need Abstract and References in this ruleset
     lowQualityWord.add("Abstract".toLowerCase());
     lowQualityWord.add("References".toLowerCase());
     lowQualityWord.add("Medline".toLowerCase());
     lowQualityWord.add("pp.".toLowerCase());
     lowQualityWord.add("See also".toLowerCase());
-
-    // Rules added by @Keerti
+    
+    // Rules added by Keerti
     lowQualityWord.add("doi".toLowerCase());
     lowQualityWord.add("Editor".toLowerCase());
     lowQualityWord.add("Received".toLowerCase());
     lowQualityWord.add("Copyright".toLowerCase());
     lowQualityWord.add("Funding".toLowerCase());
     lowQualityWord.add("mail".toLowerCase());
-
+    
     int numericWords = 0;
     int abbrWords = 0;
     int lowQualityWords = 0;
@@ -148,9 +141,9 @@ public class NoiseFilter extends JCasAnnotator_ImplBase {
       if (StringUtils.isNumeric(words[i])) {
         numericWords++;
       }
-      /*
-       * if (StringUtils.isAcronym(words[i])) { abbrWords++; }
-       */
+      /*if (StringUtils.isAcronym(words[i])) {
+        abbrWords++;
+      }*/
       if (lowQualityWord.contains(words[i].toLowerCase())) {
         lowQualityWords++;
       }

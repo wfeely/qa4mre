@@ -87,3 +87,6 @@ Baseline Types System:
 	2.	pos (String) :			POS tagging (grammatical tagging,  nouns, verbs, adjectives, adverbs, etc) 
 	3.	ner (String) :			Named Entity recognizer
 	=======================================================================================================================================================
+14. DocumentScore (Annotation): 	Scored Document type. This is used to compute the average c@1 score. This object is created for each document.
+	1.	avgCAt1Score (Double) :		Average C@1 Score. One for each document.
+	=======================================================================================================================================================
