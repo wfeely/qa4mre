@@ -95,7 +95,8 @@ public class OutputRunCasConsumer extends CasConsumer_ImplBase {
 		 */
 		try {
 			sb.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n\n");
-			sb.append(String.format("<output run_id=\"%s%d%s%s\">\n", team_id, current_year, number_of_run, language_pair));
+		  //sb.append("<!DOCTYPE note SYSTEM \"output.dtd\">\n\n");
+      sb.append(String.format("<output run_id=\"%s%d%s%s\">\n", team_id, current_year, number_of_run, language_pair));
 			sb.append(String.format("<topic t_id=\"%d\" >\n", t_id));
 			//DEBUG
 			//System.out.println(sb.toString());
@@ -170,6 +171,7 @@ public class OutputRunCasConsumer extends CasConsumer_ImplBase {
 				FSList list = doc.getQaList();
 				boolean answered = false;
 				int selectedAnswerId = -1;
+				q_id=-1;
 				while (list instanceof NonEmptyFSList) { // every question
 					answered = false; //reset "answered" variable.
 					selectedAnswerId = -1;
@@ -181,7 +183,7 @@ public class OutputRunCasConsumer extends CasConsumer_ImplBase {
 					//DEBUG
 					//System.out.println(q.getId());
 					
-					q_id = Integer.parseInt(q.getId());
+					q_id ++;
 					// DEBUG System.out.println("Question: " + q.getText());
 					FSList aList = qas.getAnswerList();
 					while (aList instanceof NonEmptyFSList) { // every answer
