@@ -213,6 +213,7 @@ public class OutputRunCasConsumer extends CasConsumer_ImplBase {
 					list = ((NonEmptyFSList) list).getTail();
 				}
 				out.write("\t</reading-test>\n");
+				testId++;
 			}
 		}
 
