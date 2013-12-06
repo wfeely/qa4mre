@@ -40,7 +40,7 @@ public class OutputRunCasConsumer extends CasConsumer_ImplBase {
 	double cAt1 = 0.0;
 
 	// if is_test == true, don't show the c@1 measure on the screen because we don't know the gold standard answer.
-	boolean IS_TEST = false;
+	boolean IS_TEST = true;
 
 	/**
 	 * for writing to the output format.
