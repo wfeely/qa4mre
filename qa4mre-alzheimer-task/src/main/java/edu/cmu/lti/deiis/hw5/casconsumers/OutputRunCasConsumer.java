@@ -24,6 +24,7 @@ import edu.cmu.lti.qalab.types.Answer;
 import edu.cmu.lti.qalab.types.Question;
 import edu.cmu.lti.qalab.types.QuestionAnswerSet;
 import edu.cmu.lti.qalab.types.TestDocument;
+import edu.cmu.lti.qalab.utils.Utils;
 
 public class OutputRunCasConsumer extends CasConsumer_ImplBase {
 
@@ -33,7 +34,7 @@ public class OutputRunCasConsumer extends CasConsumer_ImplBase {
 	double THRESHOLD = 4.0;
 	BufferedWriter out;
 
-
+	int docId = 1;
 	int correct = 0;
 	int unanswered = 0;
 	int total = 0;
@@ -45,7 +46,7 @@ public class OutputRunCasConsumer extends CasConsumer_ImplBase {
 	/**
 	 * for writing to the output format.
 	 */
-	String team_id = "cmuq"; // TBD: needs to be replaced by real team id in the
+	String team_id = "team-05"; // TBD: needs to be replaced by real team id in the
 								// task.
 	int current_year = 13;
 	String number_of_run = "01"; // TBD: needs to be passed in from the
@@ -93,7 +94,8 @@ public class OutputRunCasConsumer extends CasConsumer_ImplBase {
 		 * writing the initial headers of the output file..
 		 */
 		try {
-			sb.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n\n");
+			sb.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
+			//sb.append("<!DOCTYPE note SYSTEM \"output.dtd\">\n\n");
 			sb.append(String.format("<output run_id=\"%s%d%s%s\">\n", team_id, current_year, number_of_run, language_pair));
 			sb.append(String.format("<topic t_id=\"%d\" >\n", t_id));
 			//DEBUG
@@ -147,25 +149,29 @@ public class OutputRunCasConsumer extends CasConsumer_ImplBase {
 	 *             if an error occurs generating the XML text
 	 */
 	private void writeToFile(JCas jcas, BufferedWriter bw) throws IOException {
-
-		FSIterator<Annotation> it = jcas.getAnnotationIndex().iterator();
-		StringBuffer sb = new StringBuffer();
-		int testId=1;
-		while (it.hasNext()) {
-			Annotation an = (it.next());
+	  TestDocument doc = (TestDocument) Utils.getTestDocumentFromCAS(jcas);
+		//FSIterator<Annotation> it = jcas.getAnnotationIndex().iterator();
+		//StringBuffer sb = new StringBuffer();
+		//while (it.hasNext()) 
+	  {
+		  
+		//	Annotation an = (it.next());
 			// System.out.println(an);
 
-			if (an instanceof TestDocument) {
-				TestDocument doc = (TestDocument) an;
-				doc.setReadingTestId(String.valueOf(testId));
-				testId++;
-				//TBD: get reading-test id, such as r_id = doc.getReadingTestId()
-				System.out.println(doc.getReadingTestId());
-				out.write(String.format("\t<reading-test r_id=\"%d\">\n", Integer.parseInt(doc.getReadingTestId())));
+		//	if (an instanceof TestDocument) 
+	    {
+				//TestDocument doc = (TestDocument) an;
+				//if(Integer.parseInt(doc.getReadingTestId())!=docId)
+				//  continue;
+				//doc.setReadingTestId(String.valueOf(testId));
 				
+				//TBD: get reading-test id, such as r_id = doc.getReadingTestId()
+				out.write(String.format("\t<reading-test r_id=\"%d\">\n", Integer.parseInt(doc.getReadingTestId())));
+				//testId++;
 				FSList list = doc.getQaList();
 				boolean answered = false;
 				int selectedAnswerId = -1;
+				q_id=-1;
 				while (list instanceof NonEmptyFSList) { // every question
 					answered = false; //reset "answered" variable.
 					selectedAnswerId = -1;
@@ -177,7 +183,7 @@ public class OutputRunCasConsumer extends CasConsumer_ImplBase {
 					//DEBUG
 					//System.out.println(q.getId());
 					
-					q_id = Integer.parseInt(q.getId());
+					q_id ++;
 					// DEBUG System.out.println("Question: " + q.getText());
 					FSList aList = qas.getAnswerList();
 					while (aList instanceof NonEmptyFSList) { // every answer
@@ -213,7 +219,6 @@ public class OutputRunCasConsumer extends CasConsumer_ImplBase {
 					list = ((NonEmptyFSList) list).getTail();
 				}
 				out.write("\t</reading-test>\n");
-				testId++;
 			}
 		}
 
