@@ -36,7 +36,7 @@ public class QuestionCandSentSynonymMatcher extends JCasAnnotator_ImplBase {
 
   String schemaName;
 
-  boolean addSentWindow = false;
+  boolean addSentWindow = true;
 
   int TOP_SEARCH_RESULTS = 10;
 
