@@ -28,7 +28,10 @@
     <delegateAnalysisEngine key="AnswerChoiceCandAnsSimilarityScorer">
       <import location="annotators/AnswerChoiceCandAnsSimilarityScorer.xml"/>
     </delegateAnalysisEngine>
-  <delegateAnalysisEngine key="AnswerChoiceCandAnsSynonymScorer">
+  <delegateAnalysisEngine key="QuestionCandSentSynonymMatcher">
+      <import name="annotators.QuestionCandSentSynonymMatcher"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="AnswerChoiceCandAnsSynonymScorer">
       <import name="annotators.AnswerChoiceCandAnsSynonymScorer"/>
     </delegateAnalysisEngine>
   </delegateAnalysisEngineSpecifiers>
@@ -48,7 +51,7 @@
         <!-- <node>AnswerChoiceCandAnsSynonymScorer</node>-->
         <!--<node>AnswerChoiceCandAnsPMIScorer</node>-->
         <node>AnswerChoiceCandAnsPMIScorer</node>
-      <!-- <node>AnswerChoiceCandAnsSynonymScorer</node> -->
+      <node>AnswerChoiceCandAnsSynonymScorer</node>
       <node>AnswerSelectionByKCandVoting</node>
       </fixedFlow>
     </flowConstraints>
