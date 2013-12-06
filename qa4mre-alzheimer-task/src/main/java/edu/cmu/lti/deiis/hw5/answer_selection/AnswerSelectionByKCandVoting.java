@@ -102,12 +102,15 @@ public class AnswerSelectionByKCandVoting extends JCasAnnotator_ImplBase {
       System.out.println("Best Choice: " + "\t" + bestChoice);
 
       if (bestChoice == null) {
+        bestChoice = "None of the above";
         unanswered++;
       }
       if (bestChoice != null && correct.equals(bestChoice)) {
         matched++;
 
       }
+      Answer sAnswer = selectAnswer(bestChoice,choiceList);
+      System.out.println("Selected Choice: " + "\t" + sAnswer);
       total++;
       System.out.println("================================================");
 
@@ -123,6 +126,19 @@ public class AnswerSelectionByKCandVoting extends JCasAnnotator_ImplBase {
     avgCAt1 = avgCAt1 +cAt1;
     nDoc ++;
 
+  }
+
+  private Answer selectAnswer(String bestChoice, ArrayList<Answer> choiceList) {
+    Iterator<Answer> iter = choiceList.iterator();
+    Answer answer = null;
+    while(iter.hasNext()){
+      answer = iter.next();
+      if(answer.getText().equalsIgnoreCase(bestChoice)){
+        answer.setIsSelected(true);
+        return answer;
+      }
+    }
+    return null;
   }
 
   public String findBestChoice(HashMap<String, Double> hshAnswer) throws Exception {

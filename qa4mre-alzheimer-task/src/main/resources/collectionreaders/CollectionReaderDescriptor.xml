@@ -20,7 +20,7 @@
       <nameValuePair>
         <name>INPUT_DIR</name>
         <value>
-          <string>data/12-test-alzheimer/</string>
+          <string>data/blind-test-TA/</string>
         </value>
       </nameValuePair>
     </configurationParameterSettings>

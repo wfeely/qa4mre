@@ -142,6 +142,7 @@ public class QA4MRETestDocReader extends CollectionReader_ImplBase {
     jcas.setDocumentText(docText);
     TestDocument testDoc = new TestDocument(jcas);
     testDoc.setId(docId);
+    testDoc.setReadingTestId(testDocId);
     testDoc.setText(docText);
     testDoc.setQaList(quetionAnswersFSList);
     testDoc.addToIndexes();
