@@ -1,5 +1,7 @@
 package edu.cmu.lti.deiis.hw5.answer_selection;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -81,7 +83,7 @@ public class AnswerSelectionByKCandVoting extends JCasAnnotator_ImplBase {
           String answer = candAns.getText();
 
           double totalScore = candAns.getSimilarityScore() + candAns.getSynonymScore()
-                  + candAns.getPMIScore();
+                  +  candAns.getPMIScore();
 
           if (totalScore > maxScore) {
             maxScore = totalScore;
