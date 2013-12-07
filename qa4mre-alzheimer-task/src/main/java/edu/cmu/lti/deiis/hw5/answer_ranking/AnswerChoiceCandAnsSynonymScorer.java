@@ -75,12 +75,12 @@ public class AnswerChoiceCandAnsSynonymScorer extends JCasAnnotator_ImplBase {
 						for (int l = 0; l < choiceNERs.size(); l++) {
 							if (candSentNouns.get(k).getText()
 									.contains(choiceNERs.get(l).getText())) {
-								softMatch += candSent.getRelevanceScore();							}
+								softMatch += candSent.getSynonymMatchScore();							}
 						}
 						for (int l = 0; l < choiceNouns.size(); l++) {
 							if (candSentNouns.get(k).getText()
 									.contains(choiceNouns.get(l).getText())) {
-								softMatch += candSent.getRelevanceScore();
+								softMatch += candSent.getSynonymMatchScore();
 							}
 						}
 					}
@@ -89,13 +89,13 @@ public class AnswerChoiceCandAnsSynonymScorer extends JCasAnnotator_ImplBase {
 						for (int l = 0; l < choiceNERs.size(); l++) {
 							if (candSentNers.get(k).getText()
 									.contains(choiceNERs.get(l).getText())) {
-								softMatch += candSent.getRelevanceScore();
+								softMatch += candSent.getSynonymMatchScore();
 							}
 						}
 						for (int l = 0; l < choiceNouns.size(); l++) {
 							if (candSentNers.get(k).getText()
 									.contains(choiceNouns.get(l).getText())) {
-								softMatch += candSent.getRelevanceScore();
+								softMatch += candSent.getSynonymMatchScore();
 							}
 						}
 
