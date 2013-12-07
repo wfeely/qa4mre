@@ -46,11 +46,10 @@
         <node>QuestionCandSentSynonymMatcher</node>
         <!-- <node>QuestionCandSentSynonymMatcher</node>-->
         <!-- <node>QuestionCandSentDependencyMatcher</node>-->
-        <node>AnswerChoiceCandAnsSynonymScorer</node>
+        <node>AnswerChoiceCandAnsPMIScorer</node>
         <!-- <node>AnswerChoiceCandAnsSynonymScorer</node>-->
         <!--<node>AnswerChoiceCandAnsPMIScorer</node>-->
-        <node>AnswerChoiceCandAnsSimilarityScorer</node>
-      <node>AnswerChoiceCandAnsPMIScorer</node>
+        <node>AnswerChoiceCandAnsSynonymScorer</node>
       <node>AnswerSelectionByKCandVoting</node>
       </fixedFlow>
     </flowConstraints>
